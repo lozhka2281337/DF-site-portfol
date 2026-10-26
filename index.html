@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Портфолио Николая — Dwarf Fortress style</title>
+  <title>Nikolai Portfolio — Dwarf Fortress Style</title>
   <link rel="stylesheet" href="styles.css">
   <script>
     (() => {
@@ -17,76 +17,113 @@
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Перейти к содержимому</a>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <header class="mode-switcher" aria-label="Переключатель режима сайта">
-    <p class="mode-switcher__label">Режим отображения</p>
-    <div class="mode-switcher__controls" role="group" aria-label="Выбор режима">
-      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true">Новый режим</button>
-      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false">Классический режим</button>
+  <header class="mode-switcher" aria-label="Website mode switcher">
+    <p class="mode-switcher__label">Display mode</p>
+    <div class="mode-switcher__controls" role="group" aria-label="Mode options">
+      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Portfolio Mode">Portfolio Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to DF Mode">DF Mode</button>
     </div>
   </header>
 
   <main id="main-content">
-    <section id="portfolio-mode" aria-label="Новый режим портфолио">
+    <section id="portfolio-mode" aria-label="Portfolio Mode">
       <div class="hero">
         <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
-        <h1>Николай</h1>
+        <h1>Nikolai</h1>
         <p class="role">CS & Applied Math Student</p>
-        <p class="intro">Портфолио в стилистике Dwarf Fortress: проекты, навыки и контакты в понятном формате.</p>
+        <p class="intro">A Dwarf Fortress styled portfolio with clear project summaries, skills, and contacts.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#projects">Проекты / Expeditions</a>
-          <a class="btn btn-secondary" href="#contacts">Контакты / Trade Depot</a>
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-secondary" href="#contacts">Contact</a>
+        </div>
+        <div class="status-panel" aria-label="Fortress status panel">
+          <p class="status-panel__title">Fortress Status <span class="secondary-label">Decorative quick overview</span></p>
+          <ul class="status-list">
+            <li><span>Outpost stability</span><strong>High</strong></li>
+            <li><span>Section readability</span><strong>Improved</strong></li>
+            <li><span>Navigation clarity</span><strong>Ready</strong></li>
+            <li><span>Build complexity</span><strong>Lightweight</strong></li>
+          </ul>
         </div>
       </div>
 
       <section id="about" class="card" aria-labelledby="about-title">
-        <h2 id="about-title">Обо мне / Dwarf Profile</h2>
-        <p>Я студент направления Computer Science и Applied Mathematics. В текущей версии крепости фокус — C, NASM, алгоритмы и системное мышление.</p>
+        <h2 id="about-title">Dwarf Profile <span class="secondary-label">About</span></h2>
+        <p>I am a Computer Science and Applied Mathematics student. The current focus is C, NASM, algorithms, and system thinking.</p>
       </section>
 
       <section id="skills" class="card" aria-labelledby="skills-title">
-        <h2 id="skills-title">Навыки и технологии / Tools</h2>
-        <ul class="chip-list">
-          <li>C</li>
-          <li>NASM</li>
-          <li>Алгоритмы</li>
-          <li>Clean Code</li>
-          <li>Сети</li>
-          <li>System architecture</li>
-          <li>Codeforces (180+ задач)</li>
-          <li>HTML/CSS/JS</li>
-          <li>Python (pygame)</li>
+        <h2 id="skills-title">Tools and Skills</h2>
+        <ul class="skill-bars">
+          <li><span>C</span><div class="meter" role="img" aria-label="C skill confidence level high"><i style="--level: 82%"></i></div></li>
+          <li><span>NASM</span><div class="meter" role="img" aria-label="NASM skill confidence level medium"><i style="--level: 68%"></i></div></li>
+          <li><span>Algorithms</span><div class="meter" role="img" aria-label="Algorithms skill confidence level high"><i style="--level: 80%"></i></div></li>
+          <li><span>System Architecture</span><div class="meter" role="img" aria-label="System architecture skill confidence level medium"><i style="--level: 62%"></i></div></li>
+          <li><span>Networks</span><div class="meter" role="img" aria-label="Networks skill confidence level medium"><i style="--level: 58%"></i></div></li>
+          <li><span>HTML/CSS/JS</span><div class="meter" role="img" aria-label="HTML CSS JavaScript skill confidence level medium"><i style="--level: 70%"></i></div></li>
+          <li><span>Python (pygame)</span><div class="meter" role="img" aria-label="Python pygame skill confidence level medium"><i style="--level: 64%"></i></div></li>
+          <li><span>Codeforces (180+ solved tasks)</span><div class="meter" role="img" aria-label="Codeforces practice level high"><i style="--level: 84%"></i></div></li>
         </ul>
       </section>
 
       <section id="projects" class="card" aria-labelledby="projects-title">
-        <h2 id="projects-title">Проекты / Expeditions</h2>
+        <h2 id="projects-title">Expeditions <span class="secondary-label">Projects</span></h2>
         <div class="project-grid">
-          <article class="project-item">
+          <article class="project-item" tabindex="0">
             <h3>Cyber_Puk_Pygame</h3>
-            <p>Rogue-like игра на Python.</p>
+            <p>Rogue-like game built with Python and pygame.</p>
+            <details>
+              <summary>Details</summary>
+              <p>Focus: game loop, controls, and atmosphere.</p>
+            </details>
+            <a class="project-cta" href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer" aria-label="Open Cyber Puk Pygame code on GitHub">Open code on GitHub</a>
           </article>
-          <article class="project-item">
+          <article class="project-item" tabindex="0">
             <h3>chat-server</h3>
-            <p>Linux chat server на C.</p>
+            <p>Linux chat server written in C.</p>
+            <details>
+              <summary>Details</summary>
+              <p>Focus: sockets, networking basics, and server flow.</p>
+            </details>
+            <a class="project-cta" href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer" aria-label="Open chat server code on GitHub">Open code on GitHub</a>
           </article>
-          <article class="project-item">
+          <article class="project-item" tabindex="0">
             <h3>One-PM-Calc</h3>
-            <p>Калькулятор 1ПМ для bench/squat/deadlift на C.</p>
+            <p>1RM calculator for bench, squat, and deadlift in C.</p>
+            <details>
+              <summary>Details</summary>
+              <p>Focus: formulas, lightweight CLI UX, and clean logic.</p>
+            </details>
+            <a class="project-cta" href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer" aria-label="Open One PM Calc code on GitHub">Open code on GitHub</a>
           </article>
-          <article class="project-item">
+          <article class="project-item" tabindex="0">
             <h3>Portfolio</h3>
-            <p>Сайт-визитка на HTML/CSS/JS.</p>
+            <p>Personal portfolio website using HTML, CSS, and JavaScript.</p>
+            <details>
+              <summary>Details</summary>
+              <p>Focus: structure, readability, and responsive design.</p>
+            </details>
+            <a class="project-cta" href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer" aria-label="Open portfolio code on GitHub">Open code on GitHub</a>
           </article>
         </div>
         <p class="projects-linkline">
-          Подтверждённые ссылки на проекты: <a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">github.com/lozhka2281337</a>
+          Verified project links: <a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">github.com/lozhka2281337</a>
         </p>
       </section>
 
+      <section id="fortress-log-panel" class="card terminal-card" aria-labelledby="log-title">
+        <h2 id="log-title">Fortress Log <span class="secondary-label">Section status stream</span></h2>
+        <ul class="log-list" id="fortress-log" aria-live="polite">
+          <li><span class="log-prefix">[BOOT]</span> Portfolio Mode initialized.</li>
+          <li><span class="log-prefix">[INFO]</span> Project expedition records loaded.</li>
+          <li><span class="log-prefix">[READY]</span> Use keyboard Tab to navigate interactive elements.</li>
+        </ul>
+      </section>
+
       <section id="contacts" class="card" aria-labelledby="contacts-title">
-        <h2 id="contacts-title">Контакты / Trade Depot</h2>
+        <h2 id="contacts-title">Trade Depot <span class="secondary-label">Contacts</span></h2>
         <ul class="contact-list">
           <li><span>Email:</span> <a href="mailto:zhukovskii.nm@dvfu.ru">zhukovskii.nm@dvfu.ru</a></li>
           <li><span>GitHub:</span> <a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">github.com/lozhka2281337</a></li>
@@ -95,7 +132,7 @@
       </section>
     </section>
 
-    <section id="classic-mode" aria-label="Классическая реализация">
+    <section id="classic-mode" aria-label="DF Mode classic implementation">
       <div id="topbar">
         <div class="group">
           <span class="title" id="topbar-title"></span>
@@ -112,7 +149,7 @@
       <div id="game-area">
         <canvas id="game"></canvas>
         <div id="left-panel"></div>
-        <button id="panel-toggle" title="Свернуть панель (Tab)">◀</button>
+        <button id="panel-toggle" aria-label="Collapse panel" title="Collapse panel (Tab)">◀</button>
       </div>
     </section>
   </main>
@@ -124,5 +161,6 @@
   <script src="input.js"></script>
   <script src="main.js"></script>
   <script src="mode-switcher.js"></script>
+  <script src="portfolio-mode.js"></script>
 </body>
 </html>

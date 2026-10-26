@@ -180,7 +180,7 @@ DF.decorateStone = function () {
         if (nx >= 0 && ny >= 0 && nx < DF.MAP_W && ny < DF.MAP_H &&
             DF.map[ny][nx].walkable) { nearFloor = true; break; }
       }
-      if (nearFloor && t.name === 'Камень' && DF.hash2(x, y, 60) > 0.82)
+      if (nearFloor && t.name === 'Stone' && DF.hash2(x, y, 60) > 0.82)
         DF.map[y][x] = DF.makeTile('cracked');
     }
   }

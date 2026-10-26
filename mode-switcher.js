@@ -48,9 +48,23 @@
 
   function init() {
     applyMode(readMode(), false);
-    document.querySelectorAll('[data-mode-button]').forEach(button => {
+    const buttons = Array.from(document.querySelectorAll('[data-mode-button]'));
+    buttons.forEach(button => {
       button.addEventListener('click', () => {
         applyMode(button.getAttribute('data-mode-button'), true);
+      });
+      button.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const index = buttons.indexOf(button);
+        let nextIndex = index;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % buttons.length;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + buttons.length) % buttons.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = buttons.length - 1;
+        const nextButton = buttons[nextIndex];
+        nextButton.focus();
+        applyMode(nextButton.getAttribute('data-mode-button'), true);
       });
     });
   }
