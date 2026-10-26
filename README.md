@@ -1,20 +1,20 @@
 # DF-site-portfol
 
-Небольшой статический сайт-портфолио в двух режимах:
+Small static portfolio website with two modes:
 
-- **Новый режим** (по умолчанию) — понятная сайт-визитка в стилистике Dwarf Fortress.
-- **Классический режим** — исходная интерактивная карта-крепость с управлением.
+- **Portfolio Mode** (default) — a clear portfolio page in Dwarf Fortress style.
+- **DF Mode** — the original interactive fortress map implementation.
 
-## Запуск
+## Run
 
-Проект не требует сборки. Достаточно открыть `index.html` в браузере или запустить любой простой локальный сервер, например:
+No build step is required. Open `index.html` directly in a browser, or run a simple local server:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-После запуска откройте `http://localhost:8000`.
+Then open `http://localhost:8000`.
 
-## Переключение режимов
+## Mode switch
 
-В верхней панели есть кнопки **«Новый режим»** и **«Классический режим»**. Выбор сохраняется в `localStorage` и восстанавливается после перезагрузки страницы.
+Use the top switcher buttons **Portfolio Mode** and **DF Mode**. The choice is saved in `localStorage` and restored after page reload.

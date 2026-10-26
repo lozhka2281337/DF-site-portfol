@@ -56,7 +56,7 @@ DF.renderer = {
     if (!infoEl) return;
     const t = this.tileAt(x, y);
     if (!t) return;
-    const title = t.name || 'Неизвестно';
+    const title = t.name || 'Unknown';
     const desc  = (t.desc || '').replace(/\n/g, '<br>');
     const link  = t.link
       ? `<a href="${t.link}" target="_blank" rel="noopener">${t.linkText || t.link}</a>`
