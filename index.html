@@ -3,29 +3,119 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dwarf Fortress: About Me</title>
+  <title>Портфолио Николая — Dwarf Fortress style</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('df-site-mode');
+        document.documentElement.dataset.mode = saved === 'classic' ? 'classic' : 'new';
+      } catch (e) {
+        document.documentElement.dataset.mode = 'new';
+      }
+    })();
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Перейти к содержимому</a>
 
-  <div id="topbar">
-    <div class="group">
-      <span class="title" id="topbar-title"></span>
-      <span class="subtitle" id="topbar-subtitle"></span>
+  <header class="mode-switcher" aria-label="Переключатель режима сайта">
+    <p class="mode-switcher__label">Режим отображения</p>
+    <div class="mode-switcher__controls" role="group" aria-label="Выбор режима">
+      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true">Новый режим</button>
+      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false">Классический режим</button>
     </div>
-    <div class="group" id="topbar-stats"></div>
-    <div class="group">
-      <span>FPS: <span class="hl" id="fps">—</span></span>
-      <span id="cursor">[X: — Y: —]</span>
-      <span class="subtitle" id="topbar-date"></span>
-    </div>
-  </div>
+  </header>
 
-  <div id="game-area">
-    <canvas id="game"></canvas>
-    <div id="left-panel"></div>
-    <button id="panel-toggle" title="Свернуть панель (Tab)">◀</button>
-  </div>
+  <main id="main-content">
+    <section id="portfolio-mode" aria-label="Новый режим портфолио">
+      <div class="hero">
+        <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
+        <h1>Николай</h1>
+        <p class="role">CS & Applied Math Student</p>
+        <p class="intro">Портфолио в стилистике Dwarf Fortress: проекты, навыки и контакты в понятном формате.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects">Проекты / Expeditions</a>
+          <a class="btn btn-secondary" href="#contacts">Контакты / Trade Depot</a>
+        </div>
+      </div>
+
+      <section id="about" class="card" aria-labelledby="about-title">
+        <h2 id="about-title">Обо мне / Dwarf Profile</h2>
+        <p>Я студент направления Computer Science и Applied Mathematics. В текущей версии крепости фокус — C, NASM, алгоритмы и системное мышление.</p>
+      </section>
+
+      <section id="skills" class="card" aria-labelledby="skills-title">
+        <h2 id="skills-title">Навыки и технологии / Tools</h2>
+        <ul class="chip-list">
+          <li>C</li>
+          <li>NASM</li>
+          <li>Алгоритмы</li>
+          <li>Clean Code</li>
+          <li>Сети</li>
+          <li>System architecture</li>
+          <li>Codeforces (180+ задач)</li>
+          <li>HTML/CSS/JS</li>
+          <li>Python (pygame)</li>
+        </ul>
+      </section>
+
+      <section id="projects" class="card" aria-labelledby="projects-title">
+        <h2 id="projects-title">Проекты / Expeditions</h2>
+        <div class="project-grid">
+          <article class="project-item">
+            <h3>Cyber_Puk_Pygame</h3>
+            <p>Rogue-like игра на Python.</p>
+          </article>
+          <article class="project-item">
+            <h3>chat-server</h3>
+            <p>Linux chat server на C.</p>
+          </article>
+          <article class="project-item">
+            <h3>One-PM-Calc</h3>
+            <p>Калькулятор 1ПМ для bench/squat/deadlift на C.</p>
+          </article>
+          <article class="project-item">
+            <h3>Portfolio</h3>
+            <p>Сайт-визитка на HTML/CSS/JS.</p>
+          </article>
+        </div>
+        <p class="projects-linkline">
+          Подтверждённые ссылки на проекты: <a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">github.com/lozhka2281337</a>
+        </p>
+      </section>
+
+      <section id="contacts" class="card" aria-labelledby="contacts-title">
+        <h2 id="contacts-title">Контакты / Trade Depot</h2>
+        <ul class="contact-list">
+          <li><span>Email:</span> <a href="mailto:zhukovskii.nm@dvfu.ru">zhukovskii.nm@dvfu.ru</a></li>
+          <li><span>GitHub:</span> <a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">github.com/lozhka2281337</a></li>
+          <li><span>Telegram:</span> <a href="https://t.me/poveliteldoti" target="_blank" rel="noopener noreferrer">@poveliteldoti</a></li>
+        </ul>
+      </section>
+    </section>
+
+    <section id="classic-mode" aria-label="Классическая реализация">
+      <div id="topbar">
+        <div class="group">
+          <span class="title" id="topbar-title"></span>
+          <span class="subtitle" id="topbar-subtitle"></span>
+        </div>
+        <div class="group" id="topbar-stats"></div>
+        <div class="group">
+          <span>FPS: <span class="hl" id="fps">—</span></span>
+          <span id="cursor">[X: — Y: —]</span>
+          <span class="subtitle" id="topbar-date"></span>
+        </div>
+      </div>
+
+      <div id="game-area">
+        <canvas id="game"></canvas>
+        <div id="left-panel"></div>
+        <button id="panel-toggle" title="Свернуть панель (Tab)">◀</button>
+      </div>
+    </section>
+  </main>
 
   <script src="content.js"></script>
   <script src="config.js"></script>
@@ -33,5 +123,6 @@
   <script src="render.js"></script>
   <script src="input.js"></script>
   <script src="main.js"></script>
+  <script src="mode-switcher.js"></script>
 </body>
 </html>
