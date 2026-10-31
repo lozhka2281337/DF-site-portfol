@@ -8,7 +8,8 @@
     health: 100,
     wave: 0,
     rooms: 0,
-    log: []
+    log: [],
+    status: 'Awaiting orders'
   };
   const mapSize = 25;
 
@@ -29,7 +30,7 @@
   }
 
   function renderMap() {
-    const cells = Array.from({ length: mapSize }, () => '·');
+    const cells = Array.from({ length: mapSize * mapSize }, () => '·');
     const center = Math.floor(mapSize / 2);
     const centerCell = center * mapSize + center;
     cells[centerCell] = '╬';
@@ -61,7 +62,7 @@
     elements.walls.textContent = state.walls;
     elements.health.textContent = state.health;
     elements.wave.textContent = state.wave;
-    elements.status.textContent = state.health <= 0 ? 'Fortress fallen' : 'Awaiting orders';
+    elements.status.textContent = state.health <= 0 ? 'Fortress fallen' : state.status;
     elements.log.innerHTML = state.log.map(message => `<li>${message}</li>`).join('');
     renderMap();
   }
@@ -71,7 +72,7 @@
     state.stone += 2;
     if (Math.random() > 0.45) state.iron += 1;
     addLog('⛏ Expedition returned with stone and ore.');
-    elements.status.textContent = 'Resources secured';
+    state.status = 'Resources secured';
     render();
   }
 
@@ -79,7 +80,7 @@
     if (state.health <= 0) return;
     if (state.stone < 5) {
       addLog('▱ Not enough stone. Mine more resources.');
-      elements.status.textContent = 'Construction paused';
+      state.status = 'Construction paused';
       render();
       return;
     }
@@ -87,7 +88,7 @@
     state.rooms += 1;
     state.walls += 1;
     addLog(`▦ Room ${state.rooms} reinforced. The fortress grows.`);
-    elements.status.textContent = 'Room constructed';
+    state.status = 'Room constructed';
     render();
   }
 
@@ -103,12 +104,21 @@
     } else {
       addLog(`⚠ Wave ${state.wave} hit the walls for ${damage} damage.`);
     }
-    elements.status.textContent = state.health <= 0 ? 'Fortress fallen' : 'Wave survived';
+    state.status = state.health <= 0 ? 'Fortress fallen' : 'Wave survived';
     render();
   }
 
   function reset() {
-    Object.assign(state, { stone: 0, iron: 0, walls: 0, health: 100, wave: 0, rooms: 0, log: ['The expedition begins at a new outpost.'] });
+    Object.assign(state, {
+      stone: 0,
+      iron: 0,
+      walls: 0,
+      health: 100,
+      wave: 0,
+      rooms: 0,
+      status: 'Awaiting orders',
+      log: ['The expedition begins at a new outpost.']
+    });
     render();
   }
 
