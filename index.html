@@ -153,31 +153,46 @@
           <div>
             <p class="eyebrow">Playable outpost</p>
             <h2 id="fortress-game-title">Fortress Keeper</h2>
-            <p>Mine resources, build a room, and defend the fortress before the next wave.</p>
+            <p>Spend turns wisely: feed the dwarves, expand the outpost, forge warriors, and survive goblin waves.</p>
           </div>
           <span class="game-status" id="fortress-game-status" role="status">Awaiting orders</span>
         </div>
         <div class="fortress-game__stats" aria-label="Fortress resources">
-          <span>Stone <strong id="game-stone">0</strong></span>
+          <span>Turn <strong id="game-turn">0</strong></span>
+          <span>Dwarves <strong id="game-dwarves">3 / 3</strong></span>
+          <span>Warriors <strong id="game-warriors">0</strong></span>
+          <span>Food <strong id="game-food">30</strong></span>
+          <span>Stone <strong id="game-stone">10</strong></span>
           <span>Iron <strong id="game-iron">0</strong></span>
-          <span>Walls <strong id="game-walls">0</strong></span>
-          <span>Citadel <strong id="game-health">100</strong>%</span>
           <span>Wave <strong id="game-wave">0</strong></span>
         </div>
         <div class="fortress-game__controls">
-          <button type="button" class="game-action" data-game-action="mine">⛏ Mine resources</button>
-          <button type="button" class="game-action" data-game-action="build">▦ Build room <span>(5 stone)</span></button>
-          <button type="button" class="game-action" data-game-action="defend">⚔ Defend fortress <span>(2 iron)</span></button>
+          <div class="game-action-group">
+            <span class="game-action-group__label">Work — spends 1 turn</span>
+            <button type="button" class="game-action" data-game-action="mine">⛏ Mine shaft</button>
+            <button type="button" class="game-action" data-game-action="gather">🍄 Gather mushrooms</button>
+          </div>
+          <div class="game-action-group">
+            <span class="game-action-group__label">Build — no turn cost</span>
+            <button type="button" class="game-action" data-game-action="bedroom">▦ Bedroom <span>(20 stone)</span></button>
+            <button type="button" class="game-action" data-game-action="farm">♣ Mushroom farm <span>(15 stone, 5 iron)</span></button>
+            <button type="button" class="game-action" data-game-action="forge">⚒ Forge <span>(30 stone, 10 iron)</span></button>
+          </div>
+          <div class="game-action-group">
+            <span class="game-action-group__label">Fortress duty</span>
+            <button type="button" class="game-action" data-game-action="warrior">⚔ Train warrior <span>(5 iron)</span></button>
+          </div>
           <button type="button" class="game-action game-action--reset" data-game-action="reset">Reset expedition</button>
         </div>
         <div class="fortress-map" id="fortress-map" aria-label="Fortress map"></div>
         <div class="fortress-legend" aria-label="Fortress map legend">
           <span><b>╬</b> Citadel</span>
-          <span><b>□</b> Room</span>
+          <span><b>⌂</b> Bedroom</span>
+          <span><b>♣</b> Farm</span>
+          <span><b>⚒</b> Forge</span>
           <span><b>▓</b> Wall</span>
-          <span><b>·</b> Empty ground</span>
         </div>
-        <p class="fortress-objective">Goal: build four rooms, then survive as many attack waves as possible.</p>
+        <p class="fortress-objective">Goal: build bedrooms to grow your population, feed everyone, then prepare enough warriors for the next wave.</p>
         <ol class="fortress-log" id="fortress-game-log" aria-live="polite"></ol>
       </section>
 
