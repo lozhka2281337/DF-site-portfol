@@ -1,9 +1,10 @@
 # DF-site-portfol
 
-Small static portfolio website with five visual modes:
+Small static portfolio website with six visual modes:
 
 - **Modern Portfolio Mode** (default) — a clear portfolio page in Dwarf Fortress style.
 - **Classic ASCII Mode** — the original interactive fortress map implementation.
+- **Fortress Map Mode** — a living ASCII-style fortress that works as an interactive resume menu.
 - **Amber Terminal Mode**, **Blood Moon Mode**, and **Magma Mode** — alternate portfolio palettes.
 
 ## Run
@@ -18,4 +19,4 @@ Then open `http://localhost:8000`.
 
 ## Mode switch
 
-Use the top switcher buttons to change modes. The choice is saved in `localStorage` and restored after page reload. Portfolio modes include CRT scanlines, character-by-character text reveal, a blinking cursor, pixel-style typography, and event shake feedback in the classic map.
+Use the top switcher buttons to change modes. The choice is saved in `localStorage` and restored after page reload. Fortress Map Mode contains four clickable rooms, animated dwarves, a neon stone grid, and a chronicle panel for the portfolio sections.

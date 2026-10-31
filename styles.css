@@ -758,3 +758,231 @@ a:hover { border-color: var(--mode-accent); }
   [data-typewriter] { width: 100%; animation: none; }
   .crt-overlay { display: none; }
 }
+
+/* ─── FORTRESS MAP MODE ─── */
+#fortress-map-mode { display: none; }
+[data-mode="fortress"] #portfolio-mode,
+[data-mode="fortress"] #classic-mode { display: none; }
+[data-mode="fortress"] #fortress-map-mode { display: block; }
+[data-mode="fortress"] body {
+  background: #121214;
+  color: #d7d9de;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+}
+[data-mode="fortress"] .crt-overlay { opacity: 0.08; }
+.fortress-map-shell {
+  width: min(1440px, calc(100% - 48px));
+  min-height: calc(100vh - var(--mode-switcher-height, 59px) - 48px);
+  margin: 0 auto;
+  padding: 34px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.75fr);
+  align-items: center;
+  gap: 30px;
+}
+.fortress-map-view,
+.fortress-lore-panel {
+  border: 1px solid #34363c;
+  background: #17181c;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42), inset 0 0 40px rgba(255, 255, 255, 0.015);
+}
+.fortress-map-view { padding: clamp(18px, 3vw, 34px); }
+.fortress-map-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.fortress-map-heading h1 {
+  margin-top: 6px;
+  color: #f0f2f5;
+  font-size: clamp(1.45rem, 3vw, 2.4rem);
+  letter-spacing: -0.04em;
+}
+.fortress-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #7de2a3;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.fortress-live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7de2a3;
+  box-shadow: 0 0 12px #7de2a3;
+  animation: fortress-pulse 1.4s ease-in-out infinite;
+}
+.fortress-map-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(32, minmax(8px, 1fr));
+  grid-template-rows: repeat(18, minmax(8px, 1fr));
+  aspect-ratio: 32 / 18;
+  overflow: hidden;
+  border: 1px solid #45474d;
+  background: #0e0f12;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+}
+.fortress-terrain {
+  grid-column: calc(var(--tile-x) + 1);
+  grid-row: calc(var(--tile-y) + 1);
+  display: grid;
+  place-items: center;
+  color: #555961;
+  font-size: clamp(0.45rem, 1.1vw, 0.82rem);
+  line-height: 1;
+}
+.fortress-terrain--wall {
+  color: #62656b;
+  background: #22242a;
+  text-shadow: 0 1px 0 #111;
+}
+.fortress-terrain--corridor {
+  color: #30343b;
+  background: #121419;
+}
+.fortress-terrain--gold { color: #7a6132; }
+.fortress-terrain--cyan { color: #284f5c; }
+.fortress-terrain--violet { color: #4a3d60; }
+.fortress-terrain--green { color: #2e5a48; }
+.fortress-room {
+  position: relative;
+  z-index: 4;
+  grid-column: calc(var(--room-x) + 1) / span var(--room-width);
+  grid-row: calc(var(--room-y) + 1) / span var(--room-height);
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  border: 1px solid currentColor;
+  background: rgba(15, 17, 22, 0.76);
+  color: #e4e6eb;
+  cursor: pointer;
+  font: inherit;
+  padding: 5px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.fortress-room:hover,
+.fortress-room:focus-visible,
+.fortress-room.is-selected {
+  z-index: 8;
+  transform: scale(1.025);
+  background: rgba(28, 31, 39, 0.94);
+}
+.fortress-room--gold { border-color: #e5b84f; color: #f4cb69; box-shadow: 0 0 16px rgba(229, 184, 79, 0.22); }
+.fortress-room--cyan { border-color: #5dd8e9; color: #7be8f5; box-shadow: 0 0 16px rgba(93, 216, 233, 0.2); }
+.fortress-room--violet { border-color: #b797ff; color: #c5adff; box-shadow: 0 0 16px rgba(183, 151, 255, 0.2); }
+.fortress-room--green { border-color: #72e0a1; color: #8af0b4; box-shadow: 0 0 16px rgba(114, 224, 161, 0.2); }
+.fortress-room.is-selected { animation: room-flash 0.7s ease-out; }
+.fortress-room__symbol { font-size: clamp(1rem, 2.4vw, 2rem); text-shadow: 0 0 14px currentColor; }
+.fortress-room__title { font-size: clamp(0.52rem, 1.05vw, 0.82rem); font-weight: 700; }
+.fortress-room__subtitle { color: #a4a8b0; font-size: clamp(0.42rem, 0.8vw, 0.62rem); }
+.fortress-dwarf {
+  position: absolute;
+  z-index: 7;
+  left: calc((var(--dwarf-x) + 0.5) * 100% / 32);
+  top: calc((var(--dwarf-y) + 0.5) * 100% / 18);
+  color: #ffffff;
+  font-size: clamp(0.7rem, 1.4vw, 1rem);
+  text-shadow: 0 0 10px #fff, 0 0 18px #65d9ff;
+  transform: translate(-50%, -50%);
+  transition: left 0.7s ease, top 0.7s ease;
+  animation: dwarf-blink 1.8s ease-in-out infinite;
+  animation-delay: var(--dwarf-delay);
+}
+.fortress-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 16px;
+  color: #8f949e;
+  font-size: 0.72rem;
+}
+.fortress-map-legend b { color: #cbd0d9; }
+.fortress-lore-panel {
+  min-height: 390px;
+  padding: clamp(22px, 3vw, 38px);
+  background: #1b1c21;
+}
+.fortress-lore-panel__rule {
+  height: 1px;
+  margin: 18px 0 24px;
+  background: linear-gradient(90deg, #5dd8e9, transparent);
+}
+#fortress-lore-content { min-height: 260px; }
+#fortress-lore-content h2 {
+  margin-bottom: 16px;
+  color: #f0f2f5;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+#fortress-lore-content p {
+  margin-bottom: 14px;
+  color: #b8bdc7;
+  font-family: "Segoe UI", "Inter", sans-serif;
+  line-height: 1.7;
+}
+.lore-meta {
+  color: #65d9ff !important;
+  font-family: "JetBrains Mono", "Courier New", monospace !important;
+  font-size: 0.76rem;
+}
+.lore-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+.lore-tags span {
+  border: 1px solid #365a64;
+  border-radius: 3px;
+  color: #7be8f5;
+  padding: 5px 7px;
+  font: 0.72rem "JetBrains Mono", "Courier New", monospace;
+}
+.lore-links {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+.lore-links a { color: #8af0b4; }
+.lore-open {
+  border: 1px solid #5dd8e9;
+  background: transparent;
+  color: #7be8f5;
+  cursor: pointer;
+  font: 0.75rem "JetBrains Mono", "Courier New", monospace;
+  margin-top: 12px;
+  padding: 9px 11px;
+}
+.lore-open:hover { background: rgba(93, 216, 233, 0.1); }
+.fortress-lore-panel__hint {
+  border-top: 1px dashed #3d4149;
+  color: #747a84;
+  font-size: 0.72rem;
+  margin-top: 20px;
+  padding-top: 14px;
+}
+.is-revealing { animation: lore-reveal 0.45s ease both; }
+@keyframes fortress-pulse { 50% { opacity: 0.45; transform: scale(0.7); } }
+@keyframes dwarf-blink { 50% { opacity: 0.62; } }
+@keyframes room-flash { 0% { filter: brightness(2.2); } 100% { filter: brightness(1); } }
+@keyframes lore-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 860px) {
+  .fortress-map-shell {
+    width: min(100% - 24px, 680px);
+    grid-template-columns: 1fr;
+    padding: 18px 0 30px;
+  }
+  .fortress-lore-panel { min-height: 0; }
+  #fortress-lore-content { min-height: 180px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fortress-live i,
+  .fortress-dwarf,
+  .fortress-room.is-selected { animation: none; }
+  .fortress-dwarf { transition: none; }
+}

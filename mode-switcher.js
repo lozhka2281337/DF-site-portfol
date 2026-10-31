@@ -2,7 +2,7 @@
   'use strict';
 
   const STORAGE_KEY = 'df-site-mode';
-  const MODES = new Set(['classic', 'new', 'amber', 'blood', 'magma']);
+  const MODES = new Set(['classic', 'new', 'fortress', 'amber', 'blood', 'magma']);
 
   function normalizeMode(mode) {
     return MODES.has(mode) ? mode : 'new';

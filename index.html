@@ -9,7 +9,7 @@
     (() => {
       try {
         const saved = localStorage.getItem('df-site-mode');
-        document.documentElement.dataset.mode = saved === 'classic' ? 'classic' : 'new';
+        document.documentElement.dataset.mode = ['classic', 'fortress'].includes(saved) ? saved : 'new';
       } catch (e) {
         document.documentElement.dataset.mode = 'new';
       }
@@ -24,6 +24,7 @@
     <div class="mode-switcher__controls" role="group" aria-label="Mode options">
       <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to Classic ASCII Mode">Classic ASCII Mode</button>
       <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Modern Portfolio Mode">Modern Portfolio Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="fortress" aria-pressed="false" title="Switch to Fortress Map Mode">Fortress Map Mode</button>
       <button type="button" class="mode-btn" data-mode-button="amber" aria-pressed="false" title="Switch to Amber Terminal Mode">Amber Terminal Mode</button>
       <button type="button" class="mode-btn" data-mode-button="blood" aria-pressed="false" title="Switch to Blood Moon Mode">Blood Moon Mode</button>
       <button type="button" class="mode-btn" data-mode-button="magma" aria-pressed="false" title="Switch to Magma Mode">Magma Mode</button>
@@ -39,7 +40,6 @@
           <a href="#education">Education</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projects</a>
-          <a href="#fortress-game">Mini-game</a>
           <a href="#contacts">Contact</a>
         </div>
       </nav>
@@ -148,54 +148,6 @@
         </p>
       </section>
 
-      <section id="fortress-game" class="card fortress-game-card" aria-labelledby="fortress-game-title">
-        <div class="fortress-game__header">
-          <div>
-            <p class="eyebrow">Playable outpost</p>
-            <h2 id="fortress-game-title">Fortress Keeper</h2>
-            <p>Spend turns wisely: feed the dwarves, expand the outpost, forge warriors, and survive goblin waves.</p>
-          </div>
-          <span class="game-status" id="fortress-game-status" role="status">Awaiting orders</span>
-        </div>
-        <div class="fortress-game__stats" aria-label="Fortress resources">
-          <span>Turn <strong id="game-turn">0</strong></span>
-          <span>Dwarves <strong id="game-dwarves">3 / 3</strong></span>
-          <span>Warriors <strong id="game-warriors">0</strong></span>
-          <span>Food <strong id="game-food">30</strong></span>
-          <span>Stone <strong id="game-stone">10</strong></span>
-          <span>Iron <strong id="game-iron">0</strong></span>
-          <span>Wave <strong id="game-wave">0</strong></span>
-        </div>
-        <div class="fortress-game__controls">
-          <div class="game-action-group">
-            <span class="game-action-group__label">Work — spends 1 turn</span>
-            <button type="button" class="game-action" data-game-action="mine">⛏ Mine shaft</button>
-            <button type="button" class="game-action" data-game-action="gather">🍄 Gather mushrooms</button>
-          </div>
-          <div class="game-action-group">
-            <span class="game-action-group__label">Build — no turn cost</span>
-            <button type="button" class="game-action" data-game-action="bedroom">▦ Bedroom <span>(20 stone)</span></button>
-            <button type="button" class="game-action" data-game-action="farm">♣ Mushroom farm <span>(15 stone, 5 iron)</span></button>
-            <button type="button" class="game-action" data-game-action="forge">⚒ Forge <span>(30 stone, 10 iron)</span></button>
-          </div>
-          <div class="game-action-group">
-            <span class="game-action-group__label">Fortress duty</span>
-            <button type="button" class="game-action" data-game-action="warrior">⚔ Train warrior <span>(5 iron)</span></button>
-          </div>
-          <button type="button" class="game-action game-action--reset" data-game-action="reset">Reset expedition</button>
-        </div>
-        <div class="fortress-map" id="fortress-map" aria-label="Fortress map"></div>
-        <div class="fortress-legend" aria-label="Fortress map legend">
-          <span><b>╬</b> Citadel</span>
-          <span><b>⌂</b> Bedroom</span>
-          <span><b>♣</b> Farm</span>
-          <span><b>⚒</b> Forge</span>
-          <span><b>▓</b> Wall</span>
-        </div>
-        <p class="fortress-objective">Goal: build bedrooms to grow your population, feed everyone, then prepare enough warriors for the next wave.</p>
-        <ol class="fortress-log" id="fortress-game-log" aria-live="polite"></ol>
-      </section>
-
       <section id="contacts" class="card" aria-labelledby="contacts-title">
         <h2 id="contacts-title">Trade Depot <span class="secondary-label">Contacts</span></h2>
         <ul class="contact-list">
@@ -204,6 +156,33 @@
           <li><span>Telegram:</span> <a href="https://t.me/poveliteldoti" target="_blank" rel="noopener noreferrer">@poveliteldoti</a></li>
         </ul>
       </section>
+    </section>
+
+    <section id="fortress-map-mode" aria-label="Fortress Map Mode">
+      <div class="fortress-map-shell">
+        <div class="fortress-map-view">
+          <div class="fortress-map-heading">
+            <div>
+              <p class="eyebrow">Interactive resume map</p>
+              <h1>Mountainhold Fortress</h1>
+            </div>
+            <span class="fortress-live"><i></i> Fortress online</span>
+          </div>
+          <div class="fortress-map-grid" id="resume-fortress-map" aria-label="Interactive fortress map"></div>
+          <div class="fortress-map-legend" aria-label="Map legend">
+            <span><b>▓</b> Stone wall</span>
+            <span><b>·</b> Corridor</span>
+            <span><b>◆</b> Dwarf</span>
+            <span><b>✦</b> Select a room</span>
+          </div>
+        </div>
+        <aside class="fortress-lore-panel" aria-live="polite">
+          <p class="eyebrow">Fortress chronicle</p>
+          <div class="fortress-lore-panel__rule"></div>
+          <div id="fortress-lore-content"></div>
+          <p class="fortress-lore-panel__hint">Click a glowing room to inspect the archives.</p>
+        </aside>
+      </div>
     </section>
 
     <section id="classic-mode" aria-label="DF Mode classic implementation">
@@ -236,6 +215,6 @@
   <script src="input.js"></script>
   <script src="main.js"></script>
   <script src="mode-switcher.js"></script>
-  <script src="fortress-game.js"></script>
+  <script src="fortress-map.js"></script>
 </body>
 </html>
