@@ -31,11 +31,12 @@
   function renderMap() {
     const cells = Array.from({ length: mapSize }, () => '·');
     const center = Math.floor(mapSize / 2);
-    cells[center] = '╬';
-    if (state.rooms > 0) cells[center - 1] = '□';
-    if (state.rooms > 1) cells[center + 1] = '□';
-    if (state.rooms > 2) cells[center - mapSize] = '□';
-    if (state.rooms > 3) cells[center + mapSize] = '□';
+    const centerCell = center * mapSize + center;
+    cells[centerCell] = '╬';
+    if (state.rooms > 0) cells[centerCell - 1] = '□';
+    if (state.rooms > 1) cells[centerCell + 1] = '□';
+    if (state.rooms > 2) cells[centerCell - mapSize] = '□';
+    if (state.rooms > 3) cells[centerCell + mapSize] = '□';
     if (state.walls > 0) {
       cells[0] = '▓';
       cells[mapSize - 1] = '▓';

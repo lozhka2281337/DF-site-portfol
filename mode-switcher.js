@@ -54,8 +54,20 @@
     });
   }
 
+  function updateSwitcherHeight() {
+    const switcher = document.querySelector('.mode-switcher');
+    if (switcher) {
+      document.documentElement.style.setProperty(
+        '--mode-switcher-height',
+        `${switcher.getBoundingClientRect().height}px`
+      );
+    }
+  }
+
   function init() {
     initTypewriter();
+    updateSwitcherHeight();
+    window.addEventListener('resize', updateSwitcherHeight);
     applyMode(readMode(), false);
     const buttons = Array.from(document.querySelectorAll('[data-mode-button]'));
     buttons.forEach(button => {

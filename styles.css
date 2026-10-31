@@ -413,7 +413,7 @@ h2 {
 @keyframes game-tile-in { from { opacity: 0; } to { opacity: 1; } }
 #classic-mode {
   width: 100%;
-  height: calc(100vh - 59px);
+  height: calc(100vh - var(--mode-switcher-height, 59px));
   min-height: 420px;
   color: #aaa;
   background: #000;
@@ -692,15 +692,7 @@ a:hover { border-color: var(--mode-accent); }
   animation: cursor-blink 0.9s steps(2, end) infinite;
 }
 @keyframes cursor-blink { 50% { opacity: 0; } }
-.screen-shake { animation: screen-shake 0.16s ease-out; }
-@keyframes screen-shake {
-  0%, 100% { transform: translate(0); }
-  25% { transform: translate(1px, -1px); }
-  50% { transform: translate(-1px, 1px); }
-  75% { transform: translate(1px, 1px); }
-}
 @media (prefers-reduced-motion: reduce) {
   [data-typewriter] { width: 100%; animation: none; }
   .crt-overlay { display: none; }
-  .screen-shake { animation: none; }
 }

@@ -84,10 +84,6 @@ DF.input = {
     if (!DF.canWalk(nx, ny)) return;
     DF.player.x = nx;
     DF.player.y = ny;
-    const classicMode = document.getElementById('classic-mode');
-    classicMode.classList.remove('screen-shake');
-    void classicMode.offsetWidth;
-    classicMode.classList.add('screen-shake');
     DF.renderer.updateCamera();
     if (!DF.renderer.hoverTile) DF.renderer.showInfo(nx, ny);
     DF.renderer.markDirty();
