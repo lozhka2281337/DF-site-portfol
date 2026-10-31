@@ -22,8 +22,11 @@
   <header class="mode-switcher" aria-label="Website mode switcher">
     <p class="mode-switcher__label">Display mode</p>
     <div class="mode-switcher__controls" role="group" aria-label="Mode options">
-      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Portfolio Mode">Portfolio Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to DF Mode">DF Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to Classic ASCII Mode">Classic ASCII Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Modern Portfolio Mode">Modern Portfolio Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="amber" aria-pressed="false" title="Switch to Amber Terminal Mode">Amber Terminal Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="blood" aria-pressed="false" title="Switch to Blood Moon Mode">Blood Moon Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="magma" aria-pressed="false" title="Switch to Magma Mode">Magma Mode</button>
     </div>
   </header>
 
@@ -40,8 +43,8 @@
       </nav>
       <div class="hero" id="top">
         <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
-        <h1>Nikolai</h1>
-        <p class="role">CS & Applied Math Student</p>
+        <h1 data-typewriter>Nikolai</h1>
+        <p class="role" data-typewriter>CS & Applied Math Student</p>
         <p class="intro">I build small systems, games, and tools with a focus on C, algorithms, and understanding how things work under the hood.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#projects">View Projects</a>
@@ -162,6 +165,7 @@
       </div>
     </section>
   </main>
+  <div class="crt-overlay" aria-hidden="true"></div>
 
   <script src="content.js"></script>
   <script src="config.js"></script>

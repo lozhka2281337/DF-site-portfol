@@ -2,9 +2,10 @@
   'use strict';
 
   const STORAGE_KEY = 'df-site-mode';
+  const MODES = new Set(['classic', 'new', 'amber', 'blood', 'magma']);
 
   function normalizeMode(mode) {
-    return mode === 'classic' ? 'classic' : 'new';
+    return MODES.has(mode) ? mode : 'new';
   }
 
   function readMode() {
@@ -46,7 +47,15 @@
     }
   }
 
+  function initTypewriter() {
+    document.querySelectorAll('[data-typewriter]').forEach((element, index) => {
+      element.style.setProperty('--typewriter-chars', element.textContent.trim().length);
+      element.style.setProperty('--typewriter-delay', `${index * 0.14}s`);
+    });
+  }
+
   function init() {
+    initTypewriter();
     applyMode(readMode(), false);
     const buttons = Array.from(document.querySelectorAll('[data-mode-button]'));
     buttons.forEach(button => {
