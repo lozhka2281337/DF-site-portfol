@@ -332,7 +332,15 @@ h2 {
   font-weight: 600;
 }
 .contact-list a { overflow-wrap: anywhere; }
-.fortress-game-card { display: grid; gap: 16px; }
+.fortress-game-card {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.fortress-game-card > * {
+  width: min(100%, 860px);
+  margin-inline: auto;
+}
 .fortress-game__header {
   display: flex;
   align-items: flex-start;
@@ -351,6 +359,7 @@ h2 {
 .fortress-game__stats {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
 }
 .fortress-game__stats span {
@@ -363,7 +372,24 @@ h2 {
 .fortress-game__controls {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
+}
+.game-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed #4a3d2b;
+}
+.game-action-group__label {
+  flex-basis: 100%;
+  color: #b89d67;
+  font-size: 0.75rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 .game-action {
   border: 1px solid #6d5631;
@@ -374,10 +400,14 @@ h2 {
   font: inherit;
   padding: 9px 11px;
 }
+.game-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
 .game-action:hover,
 .game-action:focus-visible { border-color: #f3bf55; color: #fff2d2; }
 .game-action span { color: #b89d67; font-size: 0.8em; }
-.game-action--reset { margin-left: auto; color: #b89d67; }
+.game-action--reset { margin-left: 0; color: #b89d67; }
 .fortress-map {
   display: grid;
   grid-template-columns: repeat(25, 1fr);
@@ -389,6 +419,7 @@ h2 {
   color: #61513a;
   font-size: clamp(0.65rem, 2vw, 0.95rem);
   line-height: 1;
+  margin-inline: auto;
 }
 .fortress-map span {
   display: grid;
@@ -397,10 +428,14 @@ h2 {
   animation: game-tile-in 0.25s ease both;
   animation-delay: var(--tile-delay);
 }
-.fortress-map__core {
+.fortress-map__tile--core {
   color: #f3bf55;
   text-shadow: 0 0 10px rgba(243, 191, 85, 0.7);
 }
+.fortress-map__tile--bedroom { color: #c9a0ff; }
+.fortress-map__tile--farm { color: #66d17a; }
+.fortress-map__tile--forge { color: #ff8b45; }
+.fortress-map__tile--wall { color: #9c8b72; }
 .fortress-log {
   display: grid;
   gap: 5px;
@@ -408,6 +443,10 @@ h2 {
   padding-left: 20px;
   color: #d9d0bb;
   font-size: 0.88rem;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #3c3022;
+  padding: 10px 10px 10px 28px;
 }
 .fortress-log li::marker { color: #f3bf55; }
 .fortress-legend {
