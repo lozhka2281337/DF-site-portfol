@@ -191,6 +191,23 @@ button:focus-visible {
   font-size: 0.65rem;
   letter-spacing: 0.16em;
 }
+.education-card {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) 1.3fr;
+  align-items: center;
+  gap: 24px;
+}
+.education-entry {
+  display: grid;
+  gap: 5px;
+  padding-left: 18px;
+  border-left: 2px solid #f3bf55;
+}
+.education-entry strong {
+  color: #ffe4a8;
+  font-size: 1.15rem;
+}
+.education-entry span { color: #d9cdb2; }
 .btn {
   display: inline-flex;
   border-radius: 9px;
@@ -315,6 +332,85 @@ h2 {
   font-weight: 600;
 }
 .contact-list a { overflow-wrap: anywhere; }
+.fortress-game-card { display: grid; gap: 16px; }
+.fortress-game__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+.fortress-game__header p:last-child { color: #d9cdb2; }
+.game-status {
+  border: 1px solid #6d5631;
+  border-radius: 999px;
+  color: #f3bf55;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.fortress-game__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.fortress-game__stats span {
+  border: 1px solid #4a3d2b;
+  background: #1a1510;
+  padding: 7px 10px;
+  color: #b89d67;
+}
+.fortress-game__stats strong { color: #ffe4a8; }
+.fortress-game__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.game-action {
+  border: 1px solid #6d5631;
+  border-radius: 5px;
+  background: #261d14;
+  color: #f2ddb0;
+  cursor: pointer;
+  font: inherit;
+  padding: 9px 11px;
+}
+.game-action:hover,
+.game-action:focus-visible { border-color: #f3bf55; color: #fff2d2; }
+.game-action span { color: #b89d67; font-size: 0.8em; }
+.game-action--reset { margin-left: auto; color: #b89d67; }
+.fortress-map {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  gap: 2px;
+  max-width: 520px;
+  padding: 14px;
+  border: 1px solid #4a3d2b;
+  background: #090807;
+  color: #61513a;
+  font-size: clamp(0.65rem, 2vw, 0.95rem);
+  line-height: 1;
+}
+.fortress-map span {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  animation: game-tile-in 0.25s ease both;
+  animation-delay: var(--tile-delay);
+}
+.fortress-map__core {
+  color: #f3bf55;
+  text-shadow: 0 0 10px rgba(243, 191, 85, 0.7);
+}
+.fortress-log {
+  display: grid;
+  gap: 5px;
+  min-height: 5.2em;
+  padding-left: 20px;
+  color: #d9d0bb;
+  font-size: 0.88rem;
+}
+.fortress-log li::marker { color: #f3bf55; }
+@keyframes game-tile-in { from { opacity: 0; } to { opacity: 1; } }
 #classic-mode {
   width: 100%;
   height: calc(100vh - 59px);
@@ -447,6 +543,9 @@ h2 {
   .concept-card { align-items: flex-start; }
   .concept-mark { min-width: 58px; font-size: 2.1rem; }
   .skills-list { columns: 1; }
+  .education-card { grid-template-columns: 1fr; gap: 12px; }
+  .fortress-game__header { flex-direction: column; }
+  .game-action--reset { margin-left: 0; }
   #classic-mode #topbar { font-size: 10px; padding: 0 6px; }
   #classic-mode #left-panel { width: min(86vw, 300px); }
   #classic-mode #panel-toggle { left: min(86vw, 300px); }
