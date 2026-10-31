@@ -410,11 +410,34 @@ h2 {
   font-size: 0.88rem;
 }
 .fortress-log li::marker { color: #f3bf55; }
+.fortress-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  color: #b89d67;
+  font-size: 0.82rem;
+}
+.fortress-legend b {
+  color: #f3bf55;
+  font-size: 1.1em;
+}
+.fortress-objective {
+  color: #d9cdb2;
+  font-size: 0.88rem;
+}
 @keyframes game-tile-in { from { opacity: 0; } to { opacity: 1; } }
+html[data-mode="classic"],
+html[data-mode="classic"] body {
+  overflow: hidden;
+}
+html[data-mode="classic"] #main-content {
+  height: calc(100% - var(--mode-switcher-height, 59px));
+  overflow: hidden;
+}
 #classic-mode {
   width: 100%;
-  height: calc(100vh - var(--mode-switcher-height, 59px));
-  min-height: 420px;
+  height: 100%;
+  min-height: 0;
   color: #aaa;
   background: #000;
   font-family: "Consolas", "Courier New", "Segoe UI Symbol", monospace;
