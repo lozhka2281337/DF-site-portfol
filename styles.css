@@ -7,6 +7,11 @@ body {
   font-family: "Segoe UI", "Inter", "Arial", sans-serif;
   line-height: 1.55;
 }
+html[data-mode="new"] body {
+  background:
+    linear-gradient(rgba(17, 16, 14, 0.66), rgba(17, 16, 14, 0.88)),
+    url("dwarf-image.jpg") center / cover fixed no-repeat;
+}
 
 a { color: #f3bf55; }
 a:hover { color: #ffe9bf; }
@@ -74,6 +79,44 @@ button:focus-visible {
   gap: 18px;
 }
 
+.portfolio-nav {
+  position: sticky;
+  top: 62px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  border: 1px solid #4a3d2b;
+  border-radius: 10px;
+  background: rgba(25, 20, 15, 0.94);
+  backdrop-filter: blur(8px);
+}
+.portfolio-nav__brand {
+  color: #ffe4a8;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.portfolio-nav__brand span { color: #b09562; font-weight: 400; }
+.portfolio-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 14px;
+}
+.portfolio-nav__links a {
+  color: #c9b489;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.portfolio-nav__links a:hover,
+.portfolio-nav__links a:focus-visible { color: #ffe9bf; }
+
 .hero,
 .card {
   border: 1px solid #4a3d2b;
@@ -82,6 +125,7 @@ button:focus-visible {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
   padding: 20px;
 }
+.hero { scroll-margin-top: 128px; }
 
 .eyebrow {
   color: #b09562;
@@ -115,6 +159,34 @@ button:focus-visible {
   color: #b89d67;
   font-size: 0.8em;
   font-weight: 500;
+}
+.concept-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  scroll-margin-top: 128px;
+  background:
+    linear-gradient(90deg, rgba(243, 191, 85, 0.08), transparent 42%),
+    linear-gradient(145deg, #201a13 0%, #16120e 100%);
+}
+.concept-card h2 { margin-bottom: 6px; }
+.concept-card p:last-child { max-width: 68ch; color: #d9cdb2; }
+.concept-mark {
+  display: grid;
+  min-width: 82px;
+  place-items: center;
+  color: #f3bf55;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 2.8rem;
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(243, 191, 85, 0.25);
+}
+.concept-mark span {
+  margin-top: 8px;
+  color: #9c8351;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
 }
 .btn {
   display: inline-flex;
@@ -167,32 +239,23 @@ h2 {
   font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
 
-.skill-bars {
+.skills-list {
   list-style: none;
-  display: grid;
-  gap: 10px;
-}
-.skill-bars li {
-  display: grid;
-  gap: 5px;
-}
-.skill-bars span {
+  columns: 2;
+  column-gap: 32px;
   color: #f1d9a4;
-  font-size: 0.95rem;
 }
-.meter {
-  height: 10px;
-  border-radius: 999px;
-  background: #1b1510;
-  border: 1px solid #4a3d2b;
-  overflow: hidden;
+.skills-list li {
+  break-inside: avoid;
+  padding: 8px 0 8px 18px;
+  border-bottom: 1px solid #3c3022;
+  position: relative;
 }
-.meter i {
-  display: block;
-  height: 100%;
-  width: var(--level);
-  background: linear-gradient(90deg, #9b7837 0%, #f3bf55 100%);
-  transition: width 0.35s ease;
+.skills-list li::before {
+  content: "◆";
+  position: absolute;
+  left: 0;
+  color: #f3bf55;
 }
 
 .project-grid {
@@ -206,6 +269,7 @@ h2 {
   background: #1a1510;
   padding: 12px;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  scroll-margin-top: 128px;
 }
 .project-item:hover,
 .project-item:focus-within,
@@ -247,25 +311,7 @@ h2 {
   color: #c2a56d;
   font-weight: 600;
 }
-.terminal-card {
-  border-style: dashed;
-}
-.log-list {
-  list-style: none;
-  display: grid;
-  gap: 8px;
-  font-family: "Consolas", "Courier New", monospace;
-  font-size: 0.95rem;
-}
-.log-list li {
-  color: #d9d0bb;
-  border-left: 2px solid #4a3d2b;
-  padding-left: 8px;
-}
-.log-prefix {
-  color: #f3bf55;
-}
-
+.contact-list a { overflow-wrap: anywhere; }
 #classic-mode {
   width: 100%;
   height: calc(100vh - 59px);
@@ -382,6 +428,19 @@ h2 {
   .mode-switcher { padding: 10px 12px; }
   #portfolio-mode { padding: 18px 12px 36px; }
   .hero, .card { padding: 16px; }
+  .portfolio-nav {
+    top: 58px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .portfolio-nav__links {
+    justify-content: flex-start;
+    gap: 4px 12px;
+  }
+  .concept-card { align-items: flex-start; }
+  .concept-mark { min-width: 58px; font-size: 2.1rem; }
+  .skills-list { columns: 1; }
   #classic-mode #topbar { font-size: 10px; padding: 0 6px; }
   #classic-mode #left-panel { width: min(86vw, 300px); }
   #classic-mode #panel-toggle { left: min(86vw, 300px); }
