@@ -36,8 +36,10 @@
         <a class="portfolio-nav__brand" href="#top">NIKOLAI<span>/FORTRESS</span></a>
         <div class="portfolio-nav__links">
           <a href="#about">About</a>
+          <a href="#education">Education</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projects</a>
+          <a href="#fortress-game">Mini-game</a>
           <a href="#contacts">Contact</a>
         </div>
       </nav>
@@ -73,6 +75,18 @@
       <section id="about" class="card" aria-labelledby="about-title">
         <h2 id="about-title">Dwarf Profile <span class="secondary-label">About</span></h2>
         <p>I am a Computer Science and Applied Mathematics student. The current focus is C, NASM, algorithms, and system thinking.</p>
+      </section>
+
+      <section id="education" class="card education-card" aria-labelledby="education-title">
+        <div>
+          <p class="eyebrow">Current expedition</p>
+          <h2 id="education-title">Education</h2>
+        </div>
+        <div class="education-entry">
+          <strong>FEFU (RUSSIA)</strong>
+          <span>Applied Mathematics and Informatics (ПМИ)</span>
+          <span>2nd year student</span>
+        </div>
       </section>
 
       <section id="skills" class="card" aria-labelledby="skills-title">
@@ -134,6 +148,32 @@
         </p>
       </section>
 
+      <section id="fortress-game" class="card fortress-game-card" aria-labelledby="fortress-game-title">
+        <div class="fortress-game__header">
+          <div>
+            <p class="eyebrow">Playable outpost</p>
+            <h2 id="fortress-game-title">Fortress Keeper</h2>
+            <p>Mine resources, build a room, and defend the fortress before the next wave.</p>
+          </div>
+          <span class="game-status" id="fortress-game-status" role="status">Awaiting orders</span>
+        </div>
+        <div class="fortress-game__stats" aria-label="Fortress resources">
+          <span>Stone <strong id="game-stone">0</strong></span>
+          <span>Iron <strong id="game-iron">0</strong></span>
+          <span>Walls <strong id="game-walls">0</strong></span>
+          <span>Citadel <strong id="game-health">100</strong>%</span>
+          <span>Wave <strong id="game-wave">0</strong></span>
+        </div>
+        <div class="fortress-game__controls">
+          <button type="button" class="game-action" data-game-action="mine">⛏ Mine resources</button>
+          <button type="button" class="game-action" data-game-action="build">▦ Build room <span>(5 stone)</span></button>
+          <button type="button" class="game-action" data-game-action="defend">⚔ Defend fortress <span>(2 iron)</span></button>
+          <button type="button" class="game-action game-action--reset" data-game-action="reset">Reset expedition</button>
+        </div>
+        <div class="fortress-map" id="fortress-map" aria-label="Fortress map"></div>
+        <ol class="fortress-log" id="fortress-game-log" aria-live="polite"></ol>
+      </section>
+
       <section id="contacts" class="card" aria-labelledby="contacts-title">
         <h2 id="contacts-title">Trade Depot <span class="secondary-label">Contacts</span></h2>
         <ul class="contact-list">
@@ -174,5 +214,6 @@
   <script src="input.js"></script>
   <script src="main.js"></script>
   <script src="mode-switcher.js"></script>
+  <script src="fortress-game.js"></script>
 </body>
 </html>
