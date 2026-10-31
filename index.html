@@ -22,18 +22,30 @@
   <header class="mode-switcher" aria-label="Website mode switcher">
     <p class="mode-switcher__label">Display mode</p>
     <div class="mode-switcher__controls" role="group" aria-label="Mode options">
-      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Portfolio Mode">Portfolio Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to DF Mode">DF Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to Classic ASCII Mode">Classic ASCII Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Modern Portfolio Mode">Modern Portfolio Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="amber" aria-pressed="false" title="Switch to Amber Terminal Mode">Amber Terminal Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="blood" aria-pressed="false" title="Switch to Blood Moon Mode">Blood Moon Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="magma" aria-pressed="false" title="Switch to Magma Mode">Magma Mode</button>
     </div>
   </header>
 
   <main id="main-content">
     <section id="portfolio-mode" aria-label="Portfolio Mode">
-      <div class="hero">
+      <nav class="portfolio-nav" aria-label="Portfolio sections">
+        <a class="portfolio-nav__brand" href="#top">NIKOLAI<span>/FORTRESS</span></a>
+        <div class="portfolio-nav__links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contacts">Contact</a>
+        </div>
+      </nav>
+      <div class="hero" id="top">
         <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
-        <h1>Nikolai</h1>
-        <p class="role">CS & Applied Math Student</p>
-        <p class="intro">A Dwarf Fortress styled portfolio with clear project summaries, skills, and contacts.</p>
+        <h1 data-typewriter>Nikolai</h1>
+        <p class="role" data-typewriter>CS & Applied Math Student</p>
+        <p class="intro">I build small systems, games, and tools with a focus on C, algorithms, and understanding how things work under the hood.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#projects">View Projects</a>
           <a class="btn btn-secondary" href="#contacts">Contact</a>
@@ -49,6 +61,15 @@
         </div>
       </div>
 
+      <section class="card concept-card" aria-labelledby="concept-title">
+        <div>
+          <p class="eyebrow">The idea behind the interface</p>
+          <h2 id="concept-title">A portfolio built like a fortress</h2>
+          <p>Every project is an expedition, every skill is a tool, and this page is the entrance hall. The game-inspired layer adds character without hiding what I do.</p>
+        </div>
+        <div class="concept-mark" aria-hidden="true">╬<span>READY</span></div>
+      </section>
+
       <section id="about" class="card" aria-labelledby="about-title">
         <h2 id="about-title">Dwarf Profile <span class="secondary-label">About</span></h2>
         <p>I am a Computer Science and Applied Mathematics student. The current focus is C, NASM, algorithms, and system thinking.</p>
@@ -56,15 +77,15 @@
 
       <section id="skills" class="card" aria-labelledby="skills-title">
         <h2 id="skills-title">Tools and Skills</h2>
-        <ul class="skill-bars">
-          <li><span>C</span><div class="meter" role="img" aria-label="C skill confidence level high"><i style="--level: 82%"></i></div></li>
-          <li><span>NASM</span><div class="meter" role="img" aria-label="NASM skill confidence level medium"><i style="--level: 68%"></i></div></li>
-          <li><span>Algorithms</span><div class="meter" role="img" aria-label="Algorithms skill confidence level high"><i style="--level: 80%"></i></div></li>
-          <li><span>System Architecture</span><div class="meter" role="img" aria-label="System architecture skill confidence level medium"><i style="--level: 62%"></i></div></li>
-          <li><span>Networks</span><div class="meter" role="img" aria-label="Networks skill confidence level medium"><i style="--level: 58%"></i></div></li>
-          <li><span>HTML/CSS/JS</span><div class="meter" role="img" aria-label="HTML CSS JavaScript skill confidence level medium"><i style="--level: 70%"></i></div></li>
-          <li><span>Python (pygame)</span><div class="meter" role="img" aria-label="Python pygame skill confidence level medium"><i style="--level: 64%"></i></div></li>
-          <li><span>Codeforces (180+ solved tasks)</span><div class="meter" role="img" aria-label="Codeforces practice level high"><i style="--level: 84%"></i></div></li>
+        <ul class="skills-list">
+          <li>C</li>
+          <li>NASM</li>
+          <li>Algorithms</li>
+          <li>System Architecture</li>
+          <li>Networks</li>
+          <li>HTML / CSS / JavaScript</li>
+          <li>Python (pygame)</li>
+          <li>Codeforces (180+ solved tasks)</li>
         </ul>
       </section>
 
@@ -113,15 +134,6 @@
         </p>
       </section>
 
-      <section id="fortress-log-panel" class="card terminal-card" aria-labelledby="log-title">
-        <h2 id="log-title">Fortress Log <span class="secondary-label">Section status stream</span></h2>
-        <ul class="log-list" id="fortress-log" aria-live="polite">
-          <li><span class="log-prefix">[BOOT]</span> Portfolio Mode initialized.</li>
-          <li><span class="log-prefix">[INFO]</span> Project expedition records loaded.</li>
-          <li><span class="log-prefix">[READY]</span> Use keyboard Tab to navigate interactive elements.</li>
-        </ul>
-      </section>
-
       <section id="contacts" class="card" aria-labelledby="contacts-title">
         <h2 id="contacts-title">Trade Depot <span class="secondary-label">Contacts</span></h2>
         <ul class="contact-list">
@@ -153,6 +165,7 @@
       </div>
     </section>
   </main>
+  <div class="crt-overlay" aria-hidden="true"></div>
 
   <script src="content.js"></script>
   <script src="config.js"></script>
@@ -161,6 +174,5 @@
   <script src="input.js"></script>
   <script src="main.js"></script>
   <script src="mode-switcher.js"></script>
-  <script src="portfolio-mode.js"></script>
 </body>
 </html>
