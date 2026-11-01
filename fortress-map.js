@@ -8,6 +8,10 @@
   const eventLog = document.getElementById('fortress-event-log');
   const inspectButton = document.getElementById('fortress-inspect');
   const regenerateButton = document.getElementById('fortress-regenerate');
+  const zoomOutButton = document.getElementById('fortress-zoom-out');
+  const zoomInButton = document.getElementById('fortress-zoom-in');
+  const zoomResetButton = document.getElementById('fortress-zoom-reset');
+  const zoomValue = document.getElementById('fortress-zoom-value');
   if (!map || !eventLog) return;
 
   const roomSpecs = [
@@ -20,7 +24,7 @@
     { id: 'stockpile', title: '▦ Stockpile', subtitle: 'Organized reserves', symbol: '▦', className: 'amber' },
     { id: 'guard-post', title: '◈ Guard Post', subtitle: 'Fortress watch', symbol: '◈', className: 'amber' }
   ];
-  const state = { level: null, inspect: false, events: [] };
+  const state = { level: null, inspect: false, events: [], zoom: 1 };
   const key = (x, y) => `${x}:${y}`;
   const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
   const inBounds = (x, y) => x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT;
@@ -179,6 +183,8 @@
 
   function renderTerrain(level) {
     map.innerHTML = '';
+    const layer = document.createElement('div');
+    layer.className = 'fortress-map-layer';
     const canvas = document.createElement('canvas');
     canvas.className = 'fortress-canvas';
     canvas.width = WIDTH;
@@ -190,10 +196,12 @@
       const y = Math.min(HEIGHT - 1, Math.max(0, Math.floor((event.clientY - bounds.top) / bounds.height * HEIGHT)));
       inspectTile(x, y, level.roomAt.get(key(x, y)));
     });
-    map.append(canvas);
+    layer.append(canvas);
     drawMap(canvas, level);
-    level.rooms.forEach(addRoomButton);
-    renderDwarves(level);
+    level.rooms.forEach(room => addRoomButton(room, layer));
+    layer.append(...renderDwarves(level));
+    map.append(layer);
+    updateZoom();
   }
 
   function drawMap(canvas, level) {
@@ -220,7 +228,7 @@
     }
   }
 
-  function addRoomButton(room) {
+  function addRoomButton(room, layer) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `fortress-room fortress-room--${room.className}`;
@@ -240,11 +248,11 @@
       button.classList.add('is-selected');
       addEvent(`Selected ${room.title}.`);
     });
-    map.append(button);
+    layer.append(button);
   }
 
   function renderDwarves(level) {
-    map.querySelectorAll('.fortress-dwarf').forEach(element => element.remove());
+    const dwarves = [];
     level.dwarves.forEach((dwarf, index) => {
       const element = document.createElement('span');
       element.className = 'fortress-dwarf';
@@ -253,8 +261,9 @@
       element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
       element.style.setProperty('--dwarf-delay', `${index * 0.18}s`);
       element.setAttribute('aria-hidden', 'true');
-      map.append(element);
+      dwarves.push(element);
     });
+    return dwarves;
   }
 
   function updateDwarves(level) {
@@ -264,6 +273,13 @@
       element.style.left = `${(dwarf.x + 0.5) / WIDTH * 100}%`;
       element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
     });
+  }
+
+  function updateZoom() {
+    map.style.setProperty('--fortress-zoom', state.zoom);
+    if (zoomValue) zoomValue.textContent = `${Math.round(state.zoom * 100)}%`;
+    if (zoomOutButton) zoomOutButton.disabled = state.zoom <= 0.75;
+    if (zoomInButton) zoomInButton.disabled = state.zoom >= 1.5;
   }
 
   function inspectTile(x, y, room) {
@@ -319,6 +335,18 @@
     render();
   });
   regenerateButton.addEventListener('click', regenerate);
+  zoomOutButton?.addEventListener('click', () => {
+    state.zoom = Math.max(0.75, Number((state.zoom - 0.25).toFixed(2)));
+    updateZoom();
+  });
+  zoomInButton?.addEventListener('click', () => {
+    state.zoom = Math.min(1.5, Number((state.zoom + 0.25).toFixed(2)));
+    updateZoom();
+  });
+  zoomResetButton?.addEventListener('click', () => {
+    state.zoom = 1;
+    updateZoom();
+  });
   document.querySelectorAll('.fortress-article-tab').forEach(tab => {
     tab.addEventListener('click', () => activateArticle(tab));
   });

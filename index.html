@@ -171,6 +171,12 @@
           <div class="fortress-map-controls" role="toolbar" aria-label="Fortress map controls">
             <button type="button" class="fortress-control" id="fortress-inspect" aria-pressed="false">Inspect: Off</button>
             <button type="button" class="fortress-control" id="fortress-regenerate">Regenerate</button>
+            <div class="fortress-zoom-controls" role="group" aria-label="Map zoom">
+              <button type="button" class="fortress-control" id="fortress-zoom-out" aria-label="Zoom out">−</button>
+              <span class="fortress-zoom-value" id="fortress-zoom-value">100%</span>
+              <button type="button" class="fortress-control" id="fortress-zoom-in" aria-label="Zoom in">+</button>
+              <button type="button" class="fortress-control" id="fortress-zoom-reset">Reset</button>
+            </div>
           </div>
           <div class="fortress-map-grid" id="fortress-map" aria-label="Interactive fortress map"></div>
           <div class="fortress-map-legend" aria-label="Map legend">
