@@ -24,7 +24,15 @@
     { id: 'stockpile', title: '▦ Stockpile', subtitle: 'Organized reserves', symbol: '▦', className: 'amber' },
     { id: 'guard-post', title: '◈ Guard Post', subtitle: 'Fortress watch', symbol: '◈', className: 'amber' }
   ];
-  const state = { level: null, inspect: false, events: [], zoom: 1 };
+  const state = {
+    level: null,
+    inspect: false,
+    events: [],
+    zoom: 1,
+    pan: { x: 0, y: 0 },
+    drag: null,
+    suppressClick: false
+  };
   const key = (x, y) => `${x}:${y}`;
   const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
   const inBounds = (x, y) => x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT;
@@ -191,6 +199,10 @@
     canvas.height = HEIGHT;
     canvas.setAttribute('aria-label', 'Generated fortress map');
     canvas.addEventListener('click', event => {
+      if (state.suppressClick) {
+        state.suppressClick = false;
+        return;
+      }
       const bounds = canvas.getBoundingClientRect();
       const x = Math.min(WIDTH - 1, Math.max(0, Math.floor((event.clientX - bounds.left) / bounds.width * WIDTH)));
       const y = Math.min(HEIGHT - 1, Math.max(0, Math.floor((event.clientY - bounds.top) / bounds.height * HEIGHT)));
@@ -277,6 +289,8 @@
 
   function updateZoom() {
     map.style.setProperty('--fortress-zoom', state.zoom);
+    map.style.setProperty('--fortress-pan-x', `${state.pan.x}px`);
+    map.style.setProperty('--fortress-pan-y', `${state.pan.y}px`);
     if (zoomValue) zoomValue.textContent = `${Math.round(state.zoom * 100)}%`;
     if (zoomOutButton) zoomOutButton.disabled = state.zoom <= 0.75;
     if (zoomInButton) zoomInButton.disabled = state.zoom >= 1.5;
@@ -345,8 +359,41 @@
   });
   zoomResetButton?.addEventListener('click', () => {
     state.zoom = 1;
+    state.pan = { x: 0, y: 0 };
     updateZoom();
   });
+  map.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    state.drag = {
+      startX: event.clientX,
+      startY: event.clientY,
+      panX: state.pan.x,
+      panY: state.pan.y,
+      moved: false
+    };
+    map.setPointerCapture(event.pointerId);
+    map.classList.add('is-panning');
+  });
+  map.addEventListener('pointermove', event => {
+    if (!state.drag) return;
+    const deltaX = event.clientX - state.drag.startX;
+    const deltaY = event.clientY - state.drag.startY;
+    if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+      state.drag.moved = true;
+      state.suppressClick = true;
+    }
+    state.pan.x = state.drag.panX + deltaX;
+    state.pan.y = state.drag.panY + deltaY;
+    updateZoom();
+  });
+  const stopPanning = event => {
+    if (!state.drag) return;
+    if (map.hasPointerCapture(event.pointerId)) map.releasePointerCapture(event.pointerId);
+    state.drag = null;
+    map.classList.remove('is-panning');
+  };
+  map.addEventListener('pointerup', stopPanning);
+  map.addEventListener('pointercancel', stopPanning);
   document.querySelectorAll('.fortress-article-tab').forEach(tab => {
     tab.addEventListener('click', () => activateArticle(tab));
   });

@@ -994,6 +994,14 @@ a:hover { border-color: var(--mode-accent); }
   border: 1px solid #45474d;
   background: #0e0f12;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+  cursor: grab;
+  touch-action: none;
+}
+.fortress-map-grid.is-panning {
+  cursor: grabbing;
+}
+.fortress-map-grid.is-panning .fortress-map-layer {
+  transition: none;
 }
 .fortress-canvas {
   display: block;
@@ -1004,7 +1012,7 @@ a:hover { border-color: var(--mode-accent); }
 .fortress-map-layer {
   position: absolute;
   inset: 0;
-  transform: scale(var(--fortress-zoom, 1));
+  transform: translate(var(--fortress-pan-x, 0px), var(--fortress-pan-y, 0px)) scale(var(--fortress-zoom, 1));
   transform-origin: center;
   transition: transform 0.2s ease;
 }
