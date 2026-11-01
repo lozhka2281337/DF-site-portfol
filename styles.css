@@ -869,6 +869,9 @@ a:hover { border-color: var(--mode-accent); }
 
 /* ─── FORTRESS MAP MODE ─── */
 #fortress-map-mode { display: none; }
+[data-mode="fortress"] {
+  overflow: hidden;
+}
 [data-mode="fortress"] #portfolio-mode,
 [data-mode="fortress"] #classic-mode { display: none; }
 [data-mode="fortress"] #fortress-map-mode { display: block; }
@@ -876,6 +879,7 @@ a:hover { border-color: var(--mode-accent); }
   background: #121214;
   color: #d7d9de;
   font-family: "JetBrains Mono", "Courier New", monospace;
+  overflow: hidden;
 }
 [data-mode="fortress"] .crt-overlay { opacity: 0.08; }
 .fortress-map-shell {
@@ -883,7 +887,7 @@ a:hover { border-color: var(--mode-accent); }
   height: calc(100vh - var(--mode-switcher-height, 59px));
   min-height: 0;
   margin: 0 auto;
-  padding: 18px;
+  padding: 10px;
   display: grid;
   grid-template-columns: minmax(0, 2.35fr) minmax(320px, 0.8fr);
   align-items: stretch;
@@ -900,14 +904,14 @@ a:hover { border-color: var(--mode-accent); }
   min-height: 0;
   overflow: hidden;
   flex-direction: column;
-  padding: clamp(18px, 2.5vw, 32px);
+  padding: clamp(12px, 1.5vw, 20px);
 }
 .fortress-map-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 10px;
 }
 .fortress-map-heading h1 {
   margin-top: 6px;
@@ -920,7 +924,7 @@ a:hover { border-color: var(--mode-accent); }
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin: -4px 0 18px;
+  margin: -2px 0 8px;
 }
 .fortress-floor-tabs {
   display: flex;
@@ -966,9 +970,9 @@ a:hover { border-color: var(--mode-accent); }
   position: relative;
   display: block;
   flex: 0 0 auto;
-  width: min(100%, calc(100vh - var(--mode-switcher-height, 59px) - 250px));
+  width: min(100%, calc(100vh - var(--mode-switcher-height, 59px) - 190px));
   min-height: 0;
-  height: auto;
+  height: min(100%, calc(100vh - var(--mode-switcher-height, 59px) - 190px));
   aspect-ratio: 1;
   align-self: center;
   overflow: hidden;
@@ -1080,6 +1084,7 @@ a:hover { border-color: var(--mode-accent); }
 .fortress-map-legend b { color: #cbd0d9; }
 .fortress-lore-panel {
   min-height: 0;
+  overflow: hidden;
   padding: clamp(22px, 3vw, 38px);
   background: #1b1c21;
 }
@@ -1090,11 +1095,21 @@ a:hover { border-color: var(--mode-accent); }
 }
 .fortress-article {
   min-height: 260px;
+  max-height: calc(100vh - var(--mode-switcher-height, 59px) - 180px);
+  overflow-y: auto;
+  padding-right: 12px;
+  scrollbar-color: #287c91 #101216;
+  scrollbar-width: thin;
 }
 .fortress-article h2 {
   margin-bottom: 16px;
   color: #f0f2f5;
   font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+.fortress-article h3 {
+  margin: 24px 0 10px;
+  color: #9bd5df;
+  font-size: 1rem;
 }
 .fortress-article p,
 .fortress-article li {
@@ -1214,8 +1229,8 @@ a:hover { border-color: var(--mode-accent); }
     height: auto;
     min-height: 0;
   }
-  .fortress-lore-panel { min-height: 0; }
-  .fortress-article { min-height: 180px; }
+  .fortress-lore-panel { min-height: 0; overflow: visible; }
+  .fortress-article { min-height: 180px; max-height: 48vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fortress-live i,

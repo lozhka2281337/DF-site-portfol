@@ -188,14 +188,68 @@
             <button type="button" class="fortress-article-tab" id="fortress-tab-algorithm" role="tab" aria-selected="false" aria-controls="fortress-article-algorithm">Generation algorithm</button>
           </div>
           <article id="fortress-article-structure" class="fortress-article is-active" role="tabpanel" aria-labelledby="fortress-tab-structure">
-            <h2>How a dwarf fortress is built</h2>
-            <p>A fortress grows around a safe central stairwell and main hall. Rooms branch from lit corridors, while mining shafts reach into the surrounding rock.</p>
+            <h2>How a Dwarf Fortress is built</h2>
+            <p>In Dwarf Fortress, the fortress is not just decoration: it is a complex engineering system. A well-designed fortress balances logistics, defense, the psychological comfort of its residents, and complete production chains.</p>
+            <p>The architecture is always three-dimensional, built across Z-levels. Building one enormous flat layer is a logistical disaster because dwarves move vertically through stairs much faster than they travel through long horizontal corridors. A classic, efficient fortress is divided into several key zones, arranged from the surface downwards.</p>
+
+            <h3>1. Surface and entrance zone</h3>
+            <p>This is the face of the fortress, its first defensive line, and its point of contact with the outside world.</p>
             <ul>
-              <li><strong>Grand hall:</strong> the central route where traffic converges.</li>
-              <li><strong>Functional rooms:</strong> workshops, barracks, storage, and social spaces.</li>
-              <li><strong>Mining shafts:</strong> narrow exploratory branches cut into the stone.</li>
+              <li><strong>Trade Depot:</strong> a large room where human, elven, and dwarven caravans arrive. It needs wide, safe access from the surface.</li>
+              <li><strong>Airlock and trap systems:</strong> a winding corridor, often 20–30 tiles long, filled with mechanical, cage, or weapon traps.</li>
+              <li><strong>Drawbridges:</strong> retractable bridges connected to levers. During a siege or goblin raid, they rise and seal the fortress.</li>
+              <li><strong>Entrance barracks:</strong> training rooms for military dwarves, ready to intercept anything that breaks through.</li>
+              <li><strong>Pastures and farms:</strong> animal pens and outdoor crop plots, often surrounded by a high wall to form a safe inner yard.</li>
             </ul>
-            <p class="lore-meta">Rooms · corridors · workshops · defense · open visibility</p>
+
+            <h3>2. Upper underground levels: logistics and agriculture</h3>
+            <p>These levels are dug through the first layers of soil, clay, or sand directly below the surface. The soft ground is ideal for farming.</p>
+            <ul>
+              <li><strong>Underground farms:</strong> plots for growing Plump Helmets, the foundation of dwarven food and brewing.</li>
+              <li><strong>Underground pastures:</strong> habitats for cave animals.</li>
+              <li><strong>Food block:</strong> kitchens, stills, and large food stockpiles placed directly below the farms for fast processing.</li>
+            </ul>
+
+            <h3>3. Middle levels: public life</h3>
+            <p>This is where dwarves spend their free time. It should be made as beautiful as possible, with smoothed and engraved stone walls to improve the population's mood.</p>
+            <ul>
+              <li><strong>Central stairwell:</strong> a vertical 2×2 or 3×3 shaft running through the fortress and serving as its main transport hub.</li>
+              <li><strong>Tavern and meeting hall:</strong> the social center where dwarves drink, dance, talk, and welcome mercenaries, poets, and visitors. Bedrooms are often nearby.</li>
+              <li><strong>Dining hall:</strong> a large, richly decorated room filled with tables and chairs.</li>
+              <li><strong>Hospital:</strong> beds, chests for bandages, plaster, and sutures, with a reliable source of clean water nearby.</li>
+              <li><strong>Temples and libraries:</strong> spaces that satisfy the spiritual and intellectual needs of citizens.</li>
+            </ul>
+
+            <h3>4. Residential quarters</h3>
+            <p>Residential areas are usually kept away from noisy production zones or placed on separate Z-levels above or below the tavern.</p>
+            <ul>
+              <li><strong>Dormitory:</strong> a shared bedroom with many beds for newly arrived migrants.</li>
+              <li><strong>Private rooms:</strong> compact 1×3 to 3×3 bedrooms with a bed, chest, and cabinet.</li>
+              <li><strong>Nobles' quarters:</strong> luxurious apartments for a mayor, baron, or king, including a throne room, private dining room, and tomb. If their demands are not met, nobles begin issuing unreasonable mandates.</li>
+            </ul>
+
+            <h3>5. Lower levels: industrial sector</h3>
+            <p>This is the industrial core, dug deep into solid stone.</p>
+            <ul>
+              <li><strong>Craft workshops:</strong> carpenters, masons, leatherworkers, clothiers, and jewelers.</li>
+              <li><strong>Magma smelters and forges:</strong> placed near natural magma on deep levels so experienced players can smelt ore without spending charcoal.</li>
+              <li><strong>Raw-material stockpiles:</strong> large spaces around workshops filled with stone, wood, ore, and bars. Quantum stockpiles and carefully tuned Give/Take chains are often used to reduce walking distance.</li>
+            </ul>
+
+            <h3>6. Deep levels: mines and crypts</h3>
+            <ul>
+              <li><strong>Crypts and tombs:</strong> rooms with coffins. Dwarves respect their ancestors, and an improperly buried companion may return as a ghost and drive the living insane.</li>
+              <li><strong>Mining shafts:</strong> long branching corridors made to search for iron, gold, platinum, gems, and other valuable resources.</li>
+              <li><strong>Cavern access:</strong> miners eventually break into enormous underground biomes with rivers, giant spiders, and Forgotten Beasts, but also underground trees and rare resources.</li>
+            </ul>
+
+            <h3>Golden rules of fortress anatomy</h3>
+            <ol>
+              <li><strong>Stockpile above the workshop:</strong> raw materials should be directly above the workshop, with finished goods below it. A dwarf takes one stair step instead of walking twenty corridor tiles.</li>
+              <li><strong>Water safety:</strong> every river-fed water system needs floodgates and diagonal sections to reduce pressure. One misplaced tile can flood the entire fortress.</li>
+              <li><strong>Break-in prevention:</strong> cavern borders and entrances need controllable grates, bridges, or fortifications so flying and amphibious creatures cannot surprise the fortress.</li>
+            </ol>
+            <p class="lore-meta">Z-levels · logistics · defense · production · comfort</p>
           </article>
           <article id="fortress-article-algorithm" class="fortress-article" role="tabpanel" aria-labelledby="fortress-tab-algorithm" hidden>
             <h2>How the map is generated</h2>
