@@ -8,15 +8,31 @@
   const eventLog = document.getElementById('fortress-event-log');
   const inspectButton = document.getElementById('fortress-inspect');
   const regenerateButton = document.getElementById('fortress-regenerate');
+  const zoomOutButton = document.getElementById('fortress-zoom-out');
+  const zoomInButton = document.getElementById('fortress-zoom-in');
+  const zoomResetButton = document.getElementById('fortress-zoom-reset');
+  const zoomValue = document.getElementById('fortress-zoom-value');
   if (!map || !eventLog) return;
 
   const roomSpecs = [
     { id: 'grand-hall', title: '👑 Grand Hall', subtitle: 'Central gathering room', symbol: '♛', className: 'gold' },
     { id: 'barracks', title: '⚔ Barracks / Forge', subtitle: 'Defense and workshops', symbol: '⚔', className: 'cyan' },
     { id: 'treasury', title: '💎 Treasury', subtitle: 'Storage and stockpiles', symbol: '◆', className: 'violet' },
-    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Rest and social hall', symbol: '♟', className: 'green' }
+    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Rest and social hall', symbol: '♟', className: 'green' },
+    { id: 'workshop', title: '⚒ Workshop', subtitle: 'Tools and materials', symbol: '⚒', className: 'amber' },
+    { id: 'dormitory', title: '⌂ Dormitory', subtitle: 'Dwarven quarters', symbol: '⌂', className: 'amber' },
+    { id: 'stockpile', title: '▦ Stockpile', subtitle: 'Organized reserves', symbol: '▦', className: 'amber' },
+    { id: 'guard-post', title: '◈ Guard Post', subtitle: 'Fortress watch', symbol: '◈', className: 'amber' }
   ];
-  const state = { level: null, inspect: false, events: [] };
+  const state = {
+    level: null,
+    inspect: false,
+    events: [],
+    zoom: 1,
+    pan: { x: 0, y: 0 },
+    drag: null,
+    suppressClick: false
+  };
   const key = (x, y) => `${x}:${y}`;
   const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
   const inBounds = (x, y) => x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT;
@@ -95,9 +111,6 @@
     const center = { x: Math.floor(WIDTH / 2), y: Math.floor(HEIGHT / 2) };
     level.stair = center;
     level.tiles[center.y][center.x] = TILE.STAIRS;
-    carveCorridor(level, { x: 2, y: center.y }, center, 3);
-    carveCorridor(level, center, { x: center.x, y: HEIGHT - 3 }, 3);
-    carveCorridor(level, { x: center.x, y: 2 }, center, 3);
     return center;
   }
 
@@ -151,10 +164,12 @@
   function generateFortress() {
     const level = { tiles: createGrid(), rooms: [], roomAt: new Map(), walkable: new Set(), dwarves: [] };
     const leaves = [];
-    splitBsp({ x: 2, y: 2, width: WIDTH - 4, height: HEIGHT - 4 }, 2, leaves);
+    splitBsp({ x: 2, y: 2, width: WIDTH - 4, height: HEIGHT - 4 }, 3, leaves);
     const mainHall = carveMainHall(level);
-    roomSpecs.forEach((spec, index) => {
-      const room = roomFromLeaf(spec, leaves[index % leaves.length]);
+    const roomCount = randomBetween(5, 8);
+    const shuffledLeaves = leaves.sort(() => Math.random() - 0.5);
+    roomSpecs.slice(0, roomCount).forEach((spec, index) => {
+      const room = roomFromLeaf(spec, shuffledLeaves[index]);
       level.rooms.push(room);
       carveRoom(level, room);
       carveCorridor(level, mainHall, room.center, 2);
@@ -166,7 +181,17 @@
     cellularAutomata(level);
     level.tiles[mainHall.y][mainHall.x] = TILE.STAIRS;
     rebuildWalkable(level);
-    level.dwarves = [0, 1, 2].map(index => ({ x: mainHall.x + index - 1, y: mainHall.y }));
+    const spawnTiles = [...level.walkable];
+    const dwarfCount = Math.min(randomBetween(7, 18), spawnTiles.length);
+    const occupied = new Set();
+    level.dwarves = [];
+    while (level.dwarves.length < dwarfCount) {
+      const spawn = spawnTiles[Math.floor(Math.random() * spawnTiles.length)];
+      if (occupied.has(spawn)) continue;
+      occupied.add(spawn);
+      const [x, y] = spawn.split(':').map(Number);
+      level.dwarves.push({ x, y });
+    }
     return level;
   }
 
@@ -176,28 +201,36 @@
 
   function renderTerrain(level) {
     map.innerHTML = '';
+    const layer = document.createElement('div');
+    layer.className = 'fortress-map-layer';
     const canvas = document.createElement('canvas');
     canvas.className = 'fortress-canvas';
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
     canvas.setAttribute('aria-label', 'Generated fortress map');
     canvas.addEventListener('click', event => {
+      if (state.suppressClick) {
+        state.suppressClick = false;
+        return;
+      }
       const bounds = canvas.getBoundingClientRect();
       const x = Math.min(WIDTH - 1, Math.max(0, Math.floor((event.clientX - bounds.left) / bounds.width * WIDTH)));
       const y = Math.min(HEIGHT - 1, Math.max(0, Math.floor((event.clientY - bounds.top) / bounds.height * HEIGHT)));
       inspectTile(x, y, level.roomAt.get(key(x, y)));
     });
-    map.append(canvas);
+    layer.append(canvas);
     drawMap(canvas, level);
-    level.rooms.forEach(addRoomButton);
-    renderDwarves(level);
+    level.rooms.forEach(room => addRoomButton(room, layer));
+    layer.append(...renderDwarves(level));
+    map.append(layer);
+    updateZoom();
   }
 
   function drawMap(canvas, level) {
     const context = canvas.getContext('2d');
     const cellWidth = canvas.width / WIDTH;
     const cellHeight = canvas.height / HEIGHT;
-    context.fillStyle = '#0b1117';
+    context.fillStyle = '#111a22';
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (let y = 0; y < HEIGHT; y++) {
       for (let x = 0; x < WIDTH; x++) {
@@ -208,16 +241,16 @@
         } else if (type === TILE.STAIRS) {
           context.fillStyle = '#f6d477';
         } else if (room) {
-          context.fillStyle = '#164052';
+          context.fillStyle = '#123444';
         } else {
-          context.fillStyle = '#27b6d2';
+          context.fillStyle = '#23677a';
         }
         context.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.3, cellHeight + 0.3);
       }
     }
   }
 
-  function addRoomButton(room) {
+  function addRoomButton(room, layer) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `fortress-room fortress-room--${room.className}`;
@@ -237,11 +270,11 @@
       button.classList.add('is-selected');
       addEvent(`Selected ${room.title}.`);
     });
-    map.append(button);
+    layer.append(button);
   }
 
   function renderDwarves(level) {
-    map.querySelectorAll('.fortress-dwarf').forEach(element => element.remove());
+    const dwarves = [];
     level.dwarves.forEach((dwarf, index) => {
       const element = document.createElement('span');
       element.className = 'fortress-dwarf';
@@ -250,8 +283,9 @@
       element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
       element.style.setProperty('--dwarf-delay', `${index * 0.18}s`);
       element.setAttribute('aria-hidden', 'true');
-      map.append(element);
+      dwarves.push(element);
     });
+    return dwarves;
   }
 
   function updateDwarves(level) {
@@ -261,6 +295,15 @@
       element.style.left = `${(dwarf.x + 0.5) / WIDTH * 100}%`;
       element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
     });
+  }
+
+  function updateZoom() {
+    map.style.setProperty('--fortress-zoom', state.zoom);
+    map.style.setProperty('--fortress-pan-x', `${state.pan.x}px`);
+    map.style.setProperty('--fortress-pan-y', `${state.pan.y}px`);
+    if (zoomValue) zoomValue.textContent = `${Math.round(state.zoom * 100)}%`;
+    if (zoomOutButton) zoomOutButton.disabled = state.zoom <= 0.75;
+    if (zoomInButton) zoomInButton.disabled = state.zoom >= 1.5;
   }
 
   function inspectTile(x, y, room) {
@@ -316,6 +359,51 @@
     render();
   });
   regenerateButton.addEventListener('click', regenerate);
+  zoomOutButton?.addEventListener('click', () => {
+    state.zoom = Math.max(0.75, Number((state.zoom - 0.25).toFixed(2)));
+    updateZoom();
+  });
+  zoomInButton?.addEventListener('click', () => {
+    state.zoom = Math.min(1.5, Number((state.zoom + 0.25).toFixed(2)));
+    updateZoom();
+  });
+  zoomResetButton?.addEventListener('click', () => {
+    state.zoom = 1;
+    state.pan = { x: 0, y: 0 };
+    updateZoom();
+  });
+  map.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    state.drag = {
+      startX: event.clientX,
+      startY: event.clientY,
+      panX: state.pan.x,
+      panY: state.pan.y,
+      moved: false
+    };
+    map.setPointerCapture(event.pointerId);
+    map.classList.add('is-panning');
+  });
+  map.addEventListener('pointermove', event => {
+    if (!state.drag) return;
+    const deltaX = event.clientX - state.drag.startX;
+    const deltaY = event.clientY - state.drag.startY;
+    if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+      state.drag.moved = true;
+      state.suppressClick = true;
+    }
+    state.pan.x = state.drag.panX + deltaX;
+    state.pan.y = state.drag.panY + deltaY;
+    updateZoom();
+  });
+  const stopPanning = event => {
+    if (!state.drag) return;
+    if (map.hasPointerCapture(event.pointerId)) map.releasePointerCapture(event.pointerId);
+    state.drag = null;
+    map.classList.remove('is-panning');
+  };
+  map.addEventListener('pointerup', stopPanning);
+  map.addEventListener('pointercancel', stopPanning);
   document.querySelectorAll('.fortress-article-tab').forEach(tab => {
     tab.addEventListener('click', () => activateArticle(tab));
   });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nikolai Portfolio — Dwarf Fortress Style</title>
+  <title>Nikolai Zhukovskii Portfolio — Dwarf Fortress Style</title>
   <link rel="stylesheet" href="styles.css">
   <script>
     (() => {
@@ -45,21 +45,12 @@
       <div class="hero" id="top">
         <button type="button" class="palette-btn palette-btn--hero" data-palette-button aria-label="Change portfolio palette">Palette: Modern</button>
         <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
-        <h1 data-typewriter>Nikolai</h1>
+        <h1 data-typewriter>Nikolai Zhukovskii</h1>
         <p class="role" data-typewriter>CS & Applied Math Student</p>
         <p class="intro">I build small systems, games, and tools with a focus on C, algorithms, and understanding how things work under the hood.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#projects">View Projects</a>
           <a class="btn btn-secondary" href="#contacts">Contact</a>
-        </div>
-        <div class="status-panel" aria-label="Fortress status panel">
-          <p class="status-panel__title">Fortress Status <span class="secondary-label">Decorative quick overview</span></p>
-          <ul class="status-list">
-            <li><span>Outpost stability</span><strong>High</strong></li>
-            <li><span>Section readability</span><strong>Improved</strong></li>
-            <li><span>Navigation clarity</span><strong>Ready</strong></li>
-            <li><span>Build complexity</span><strong>Lightweight</strong></li>
-          </ul>
         </div>
       </div>
 
@@ -74,7 +65,7 @@
 
       <section id="about" class="card" aria-labelledby="about-title">
         <h2 id="about-title">Dwarf Profile <span class="secondary-label">About</span></h2>
-        <p>I am a Computer Science and Applied Mathematics student. The current focus is C, NASM, algorithms, and system thinking.</p>
+        <p>I am a Computer Science and Applied Mathematics student at FEFU. The current focus is C/C++, NASM, Python, algorithms, and system thinking.</p>
       </section>
 
       <section id="education" class="card education-card" aria-labelledby="education-title">
@@ -92,15 +83,18 @@
       <section id="skills" class="card" aria-labelledby="skills-title">
         <h2 id="skills-title">Tools and Skills</h2>
         <ul class="skills-list">
-          <li>C</li>
+          <li>C/C++</li>
           <li>NASM</li>
+          <li>Python</li>
           <li>Algorithms</li>
-          <li>System Architecture</li>
-          <li>Networks</li>
-          <li>HTML / CSS / JavaScript</li>
-          <li>Python (pygame)</li>
           <li>Codeforces (180+ solved tasks)</li>
         </ul>
+      </section>
+
+      <section class="card" aria-labelledby="profile-notes-title">
+        <p class="eyebrow">Beyond the code</p>
+        <h2 id="profile-notes-title">Personal Notes</h2>
+        <p>Outside coursework and programming, I am interested in heavy music, strength training, and electric guitar. I am currently deepening my knowledge of C/C++, algorithms, system architecture, and operating systems.</p>
       </section>
 
       <section id="projects" class="card" aria-labelledby="projects-title">
@@ -171,6 +165,12 @@
           <div class="fortress-map-controls" role="toolbar" aria-label="Fortress map controls">
             <button type="button" class="fortress-control" id="fortress-inspect" aria-pressed="false">Inspect: Off</button>
             <button type="button" class="fortress-control" id="fortress-regenerate">Regenerate</button>
+            <div class="fortress-zoom-controls" role="group" aria-label="Map zoom">
+              <button type="button" class="fortress-control" id="fortress-zoom-out" aria-label="Zoom out">−</button>
+              <span class="fortress-zoom-value" id="fortress-zoom-value">100%</span>
+              <button type="button" class="fortress-control" id="fortress-zoom-in" aria-label="Zoom in">+</button>
+              <button type="button" class="fortress-control" id="fortress-zoom-reset">Reset</button>
+            </div>
           </div>
           <div class="fortress-map-grid" id="fortress-map" aria-label="Interactive fortress map"></div>
           <div class="fortress-map-legend" aria-label="Map legend">
@@ -188,21 +188,75 @@
             <button type="button" class="fortress-article-tab" id="fortress-tab-algorithm" role="tab" aria-selected="false" aria-controls="fortress-article-algorithm">Generation algorithm</button>
           </div>
           <article id="fortress-article-structure" class="fortress-article is-active" role="tabpanel" aria-labelledby="fortress-tab-structure">
-            <h2>How a dwarf fortress is built</h2>
-            <p>A fortress grows around a safe central stairwell and main hall. Rooms branch from lit corridors, while mining shafts reach into the surrounding rock.</p>
+            <h2>How a Dwarf Fortress is built</h2>
+            <p>In Dwarf Fortress, the fortress is not just decoration: it is a complex engineering system. A well-designed fortress balances logistics, defense, the psychological comfort of its residents, and complete production chains.</p>
+            <p>The architecture is always three-dimensional, built across Z-levels. Building one enormous flat layer is a logistical disaster because dwarves move vertically through stairs much faster than they travel through long horizontal corridors. A classic, efficient fortress is divided into several key zones, arranged from the surface downwards.</p>
+
+            <h3>1. Surface and entrance zone</h3>
+            <p>This is the face of the fortress, its first defensive line, and its point of contact with the outside world.</p>
             <ul>
-              <li><strong>Grand hall:</strong> the central route where traffic converges.</li>
-              <li><strong>Functional rooms:</strong> workshops, barracks, storage, and social spaces.</li>
-              <li><strong>Mining shafts:</strong> narrow exploratory branches cut into the stone.</li>
+              <li><strong>Trade Depot:</strong> a large room where human, elven, and dwarven caravans arrive. It needs wide, safe access from the surface.</li>
+              <li><strong>Airlock and trap systems:</strong> a winding corridor, often 20–30 tiles long, filled with mechanical, cage, or weapon traps.</li>
+              <li><strong>Drawbridges:</strong> retractable bridges connected to levers. During a siege or goblin raid, they rise and seal the fortress.</li>
+              <li><strong>Entrance barracks:</strong> training rooms for military dwarves, ready to intercept anything that breaks through.</li>
+              <li><strong>Pastures and farms:</strong> animal pens and outdoor crop plots, often surrounded by a high wall to form a safe inner yard.</li>
             </ul>
-            <p class="lore-meta">Rooms · corridors · workshops · defense · open visibility</p>
+
+            <h3>2. Upper underground levels: logistics and agriculture</h3>
+            <p>These levels are dug through the first layers of soil, clay, or sand directly below the surface. The soft ground is ideal for farming.</p>
+            <ul>
+              <li><strong>Underground farms:</strong> plots for growing Plump Helmets, the foundation of dwarven food and brewing.</li>
+              <li><strong>Underground pastures:</strong> habitats for cave animals.</li>
+              <li><strong>Food block:</strong> kitchens, stills, and large food stockpiles placed directly below the farms for fast processing.</li>
+            </ul>
+
+            <h3>3. Middle levels: public life</h3>
+            <p>This is where dwarves spend their free time. It should be made as beautiful as possible, with smoothed and engraved stone walls to improve the population's mood.</p>
+            <ul>
+              <li><strong>Central stairwell:</strong> a vertical 2×2 or 3×3 shaft running through the fortress and serving as its main transport hub.</li>
+              <li><strong>Tavern and meeting hall:</strong> the social center where dwarves drink, dance, talk, and welcome mercenaries, poets, and visitors. Bedrooms are often nearby.</li>
+              <li><strong>Dining hall:</strong> a large, richly decorated room filled with tables and chairs.</li>
+              <li><strong>Hospital:</strong> beds, chests for bandages, plaster, and sutures, with a reliable source of clean water nearby.</li>
+              <li><strong>Temples and libraries:</strong> spaces that satisfy the spiritual and intellectual needs of citizens.</li>
+            </ul>
+
+            <h3>4. Residential quarters</h3>
+            <p>Residential areas are usually kept away from noisy production zones or placed on separate Z-levels above or below the tavern.</p>
+            <ul>
+              <li><strong>Dormitory:</strong> a shared bedroom with many beds for newly arrived migrants.</li>
+              <li><strong>Private rooms:</strong> compact 1×3 to 3×3 bedrooms with a bed, chest, and cabinet.</li>
+              <li><strong>Nobles' quarters:</strong> luxurious apartments for a mayor, baron, or king, including a throne room, private dining room, and tomb. If their demands are not met, nobles begin issuing unreasonable mandates.</li>
+            </ul>
+
+            <h3>5. Lower levels: industrial sector</h3>
+            <p>This is the industrial core, dug deep into solid stone.</p>
+            <ul>
+              <li><strong>Craft workshops:</strong> carpenters, masons, leatherworkers, clothiers, and jewelers.</li>
+              <li><strong>Magma smelters and forges:</strong> placed near natural magma on deep levels so experienced players can smelt ore without spending charcoal.</li>
+              <li><strong>Raw-material stockpiles:</strong> large spaces around workshops filled with stone, wood, ore, and bars. Quantum stockpiles and carefully tuned Give/Take chains are often used to reduce walking distance.</li>
+            </ul>
+
+            <h3>6. Deep levels: mines and crypts</h3>
+            <ul>
+              <li><strong>Crypts and tombs:</strong> rooms with coffins. Dwarves respect their ancestors, and an improperly buried companion may return as a ghost and drive the living insane.</li>
+              <li><strong>Mining shafts:</strong> long branching corridors made to search for iron, gold, platinum, gems, and other valuable resources.</li>
+              <li><strong>Cavern access:</strong> miners eventually break into enormous underground biomes with rivers, giant spiders, and Forgotten Beasts, but also underground trees and rare resources.</li>
+            </ul>
+
+            <h3>Golden rules of fortress anatomy</h3>
+            <ol>
+              <li><strong>Stockpile above the workshop:</strong> raw materials should be directly above the workshop, with finished goods below it. A dwarf takes one stair step instead of walking twenty corridor tiles.</li>
+              <li><strong>Water safety:</strong> every river-fed water system needs floodgates and diagonal sections to reduce pressure. One misplaced tile can flood the entire fortress.</li>
+              <li><strong>Break-in prevention:</strong> cavern borders and entrances need controllable grates, bridges, or fortifications so flying and amphibious creatures cannot surprise the fortress.</li>
+            </ol>
+            <p class="lore-meta">Z-levels · logistics · defense · production · comfort</p>
           </article>
           <article id="fortress-article-algorithm" class="fortress-article" role="tabpanel" aria-labelledby="fortress-tab-algorithm" hidden>
             <h2>How the map is generated</h2>
             <p>Every regeneration creates a fresh 80 × 80 fortress from a random layout.</p>
             <ol>
               <li>Split the 80 × 80 rock into balanced BSP sectors.</li>
-              <li>Carve medium-sized rectangular rooms inside the sectors.</li>
+              <li>Carve 5–8 medium-sized rectangular rooms inside the sectors.</li>
               <li>Connect every room to the central stairwell with corridors.</li>
               <li>Add fan-shaped shafts, then soften edges with cellular automata.</li>
             </ol>
@@ -217,6 +271,10 @@
     </section>
 
     <section id="classic-mode" aria-label="DF Mode classic implementation">
+      <div class="classic-mobile-notice" role="status">
+        <h1>Classic ASCII Mode</h1>
+        <p>This mode is available on desktop screens only. Switch to Portfolio Mode or Fortress Map Mode on mobile.</p>
+      </div>
       <div id="topbar">
         <div class="group">
           <span class="title" id="topbar-title"></span>

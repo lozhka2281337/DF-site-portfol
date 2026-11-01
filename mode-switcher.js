@@ -57,10 +57,13 @@
   }
 
   function applyMode(mode, persist) {
-    const nextMode = normalizeMode(mode);
+    const requestedMode = normalizeMode(mode);
+    const nextMode = requestedMode === 'classic' && window.matchMedia('(max-width: 768px)').matches
+      ? 'new'
+      : requestedMode;
     document.documentElement.setAttribute('data-mode', nextMode);
     refreshButtons(nextMode);
-    if (persist) saveMode(nextMode);
+    if (persist || requestedMode !== nextMode) saveMode(nextMode);
 
     if (nextMode === 'classic' && window.DF && DF.renderer) {
       requestAnimationFrame(() => {
@@ -91,6 +94,11 @@
     initTypewriter();
     updateSwitcherHeight();
     window.addEventListener('resize', updateSwitcherHeight);
+    window.addEventListener('resize', () => {
+      if (window.matchMedia('(max-width: 768px)').matches && readMode() === 'classic') {
+        applyMode('new', true);
+      }
+    });
     applyMode(readMode(), false);
     let savedPalette = 'modern';
     try {
