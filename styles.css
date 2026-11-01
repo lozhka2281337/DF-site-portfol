@@ -908,6 +908,37 @@ a:hover { border-color: var(--mode-accent); }
   font-size: clamp(1.45rem, 3vw, 2.4rem);
   letter-spacing: -0.04em;
 }
+.fortress-map-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 18px;
+}
+.fortress-floor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-right: auto;
+}
+.fortress-control {
+  border: 1px solid #3c4650;
+  background: #101216;
+  color: #aeb8c2;
+  cursor: pointer;
+  font: 0.68rem "JetBrains Mono", "Courier New", monospace;
+  letter-spacing: 0.02em;
+  padding: 8px 10px;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.fortress-control:hover,
+.fortress-control:focus-visible,
+.fortress-control.is-active {
+  border-color: #65d9ff;
+  background: rgba(101, 217, 255, 0.1);
+  color: #d7f7ff;
+  box-shadow: 0 0 12px rgba(101, 217, 255, 0.12);
+}
 .fortress-live {
   display: inline-flex;
   align-items: center;
@@ -936,6 +967,14 @@ a:hover { border-color: var(--mode-accent); }
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
 }
 .fortress-terrain {
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  cursor: crosshair;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
   grid-column: calc(var(--tile-x) + 1);
   grid-row: calc(var(--tile-y) + 1);
   display: grid;
@@ -943,6 +982,11 @@ a:hover { border-color: var(--mode-accent); }
   color: #555961;
   font-size: clamp(0.45rem, 1.1vw, 0.82rem);
   line-height: 1;
+}
+.fortress-terrain.is-fogged {
+  color: #24272d;
+  background: #0c0d10;
+  cursor: default;
 }
 .fortress-terrain--wall {
   color: #62656b;
@@ -985,6 +1029,10 @@ a:hover { border-color: var(--mode-accent); }
 .fortress-room--cyan { border-color: #5dd8e9; color: #7be8f5; box-shadow: 0 0 16px rgba(93, 216, 233, 0.2); }
 .fortress-room--violet { border-color: #b797ff; color: #c5adff; box-shadow: 0 0 16px rgba(183, 151, 255, 0.2); }
 .fortress-room--green { border-color: #72e0a1; color: #8af0b4; box-shadow: 0 0 16px rgba(114, 224, 161, 0.2); }
+.fortress-room--gold { animation: throne-glow 3.2s ease-in-out infinite; }
+.fortress-room--cyan { animation: forge-sparks 1.8s steps(2, end) infinite; }
+.fortress-room--violet { animation: treasure-pulse 2.4s ease-in-out infinite; }
+.fortress-room--green { animation: tavern-flicker 2.8s ease-in-out infinite; }
 .fortress-room.is-selected { animation: room-flash 0.7s ease-out; }
 .fortress-room__symbol { font-size: clamp(1rem, 2.4vw, 2rem); text-shadow: 0 0 14px currentColor; }
 .fortress-room__title { font-size: clamp(0.52rem, 1.05vw, 0.82rem); font-weight: 700; }
@@ -1074,11 +1122,36 @@ a:hover { border-color: var(--mode-accent); }
   margin-top: 20px;
   padding-top: 14px;
 }
+.fortress-events {
+  border-top: 1px solid #2e333b;
+  margin-top: 18px;
+  padding-top: 14px;
+}
+.fortress-events .eyebrow { margin-bottom: 8px; }
+.fortress-events ol {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fortress-events li {
+  color: #858d98;
+  font: 0.68rem/1.45 "JetBrains Mono", "Courier New", monospace;
+}
+.fortress-events li::before {
+  color: #65d9ff;
+  content: "› ";
+}
 .is-revealing { animation: lore-reveal 0.45s ease both; }
 @keyframes fortress-pulse { 50% { opacity: 0.45; transform: scale(0.7); } }
 @keyframes dwarf-blink { 50% { opacity: 0.62; } }
 @keyframes room-flash { 0% { filter: brightness(2.2); } 100% { filter: brightness(1); } }
 @keyframes lore-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes throne-glow { 50% { box-shadow: 0 0 25px rgba(229, 184, 79, 0.36); } }
+@keyframes forge-sparks { 50% { filter: brightness(1.22); } }
+@keyframes treasure-pulse { 50% { box-shadow: 0 0 28px rgba(183, 151, 255, 0.38); } }
+@keyframes tavern-flicker { 18%, 22%, 64% { filter: brightness(1.15); } 20%, 66% { filter: brightness(0.92); } }
 @media (max-width: 860px) {
   .fortress-map-shell {
     width: min(100% - 24px, 680px);
@@ -1091,6 +1164,7 @@ a:hover { border-color: var(--mode-accent); }
 @media (prefers-reduced-motion: reduce) {
   .fortress-live i,
   .fortress-dwarf,
+  .fortress-room,
   .fortress-room.is-selected { animation: none; }
   .fortress-dwarf { transition: none; }
 }
