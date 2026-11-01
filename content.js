@@ -51,8 +51,9 @@ DF.CONTENT = {
     title: '⛏ OWNER',
     rows: [
       { key: 'Name:',        value: 'Nikolai' },
-      { key: 'Profession:',  value: 'CS & Applied Math Student' },
-      { key: 'Mood:',        value: 'Aiming for an A', color: '#00ff22' },
+      { key: 'Education:',   value: 'FEFU · ПМИ · 2nd year' },
+      { key: 'Focus:',       value: 'C/C++, NASM, Python, algorithms' },
+      { key: 'Mood:',         value: 'Aiming for an A', color: '#00ff22' },
     ],
   },
 
@@ -99,8 +100,9 @@ DF.CONTENT = {
     x: 40, y: 56,
     ch: '☺', fg: '#00ffff',
     name: 'You',
-    desc: 'Student. Mood: Focused.\n' +
-          'Skills: C, NASM, electric guitar.',
+    desc: 'FEFU student, ПМИ, 2nd year. Mood: Focused.\n' +
+          'Focus: C/C++, NASM, Python, algorithms.\n' +
+          'Interests: heavy music, gym, electric guitar.',
   },
 
   /* ═══════════ NPCs ═══════════ */
@@ -195,7 +197,9 @@ DF.CONTENT = {
       name: 'Throne',
       desc: 'You ascend the throne. Inscription above the entrance:\n\n' +
             '  "Nikolai, CS Student"\n\n' +
-            'Specialization: C, NASM.\n' +
+            'Education: FEFU, ПМИ, 2nd year.\n' +
+            'Specialization: C/C++, NASM, Python, algorithms.\n' +
+            'Achievement: 180+ solved Codeforces tasks.\n' +
             'Hobbies: heavy music, gym, CS.\n',
     },
     { x: 128, y: 36, ch: '*', fg: '#ff4400', name: 'Brazier', desc: 'Warm fire illuminates the vault.' },
