@@ -10,6 +10,8 @@
       try {
         const saved = localStorage.getItem('df-site-mode');
         document.documentElement.dataset.mode = ['classic', 'fortress'].includes(saved) ? saved : 'new';
+        const palette = localStorage.getItem('df-site-palette');
+        document.documentElement.dataset.palette = ['modern', 'amber', 'blood', 'magma'].includes(palette) ? palette : 'modern';
       } catch (e) {
         document.documentElement.dataset.mode = 'new';
       }
@@ -23,11 +25,8 @@
     <p class="mode-switcher__label">Display mode</p>
     <div class="mode-switcher__controls" role="group" aria-label="Mode options">
       <button type="button" class="mode-btn" data-mode-button="classic" aria-pressed="false" title="Switch to Classic ASCII Mode">Classic ASCII Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Modern Portfolio Mode">Modern Portfolio Mode</button>
+      <button type="button" class="mode-btn" data-mode-button="new" aria-pressed="true" title="Switch to Portfolio Mode">Portfolio Mode</button>
       <button type="button" class="mode-btn" data-mode-button="fortress" aria-pressed="false" title="Switch to Fortress Map Mode">Fortress Map Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="amber" aria-pressed="false" title="Switch to Amber Terminal Mode">Amber Terminal Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="blood" aria-pressed="false" title="Switch to Blood Moon Mode">Blood Moon Mode</button>
-      <button type="button" class="mode-btn" data-mode-button="magma" aria-pressed="false" title="Switch to Magma Mode">Magma Mode</button>
     </div>
   </header>
 
@@ -44,6 +43,7 @@
         </div>
       </nav>
       <div class="hero" id="top">
+        <button type="button" class="palette-btn palette-btn--hero" data-palette-button aria-label="Change portfolio palette">Palette: Modern</button>
         <p class="eyebrow">Portfolio / Mountainhold Ledger</p>
         <h1 data-typewriter>Nikolai</h1>
         <p class="role" data-typewriter>CS & Applied Math Student</p>
@@ -168,6 +168,15 @@
             </div>
             <span class="fortress-live"><i></i> Fortress online</span>
           </div>
+          <div class="fortress-map-controls" role="toolbar" aria-label="Fortress map controls">
+            <div class="fortress-floor-tabs" role="group" aria-label="Fortress levels">
+              <button type="button" class="fortress-control is-active" data-floor="0">Surface</button>
+              <button type="button" class="fortress-control" data-floor="1">Deep Halls</button>
+              <button type="button" class="fortress-control" data-floor="2">Mines</button>
+            </div>
+            <button type="button" class="fortress-control" id="fortress-inspect" aria-pressed="false">Inspect: Off</button>
+            <button type="button" class="fortress-control" id="fortress-regenerate">Regenerate</button>
+          </div>
           <div class="fortress-map-grid" id="resume-fortress-map" aria-label="Interactive fortress map"></div>
           <div class="fortress-map-legend" aria-label="Map legend">
             <span><b>▓</b> Stone wall</span>
@@ -181,6 +190,10 @@
           <div class="fortress-lore-panel__rule"></div>
           <div id="fortress-lore-content"></div>
           <p class="fortress-lore-panel__hint">Click a glowing room to inspect the archives.</p>
+          <div class="fortress-events" aria-label="Fortress events">
+            <p class="eyebrow">Recent events</p>
+            <ol id="fortress-event-log"></ol>
+          </div>
         </aside>
       </div>
     </section>
