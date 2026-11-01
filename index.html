@@ -163,7 +163,7 @@
         <div class="fortress-map-view">
           <div class="fortress-map-heading">
             <div>
-              <p class="eyebrow">Interactive resume map</p>
+              <p class="eyebrow">Procedural dungeon generator</p>
               <h1>Mountainhold Fortress</h1>
             </div>
             <span class="fortress-live"><i></i> Fortress online</span>
@@ -177,7 +177,7 @@
             <button type="button" class="fortress-control" id="fortress-inspect" aria-pressed="false">Inspect: Off</button>
             <button type="button" class="fortress-control" id="fortress-regenerate">Regenerate</button>
           </div>
-          <div class="fortress-map-grid" id="resume-fortress-map" aria-label="Interactive fortress map"></div>
+          <div class="fortress-map-grid" id="fortress-map" aria-label="Interactive fortress map"></div>
           <div class="fortress-map-legend" aria-label="Map legend">
             <span><b>▓</b> Stone wall</span>
             <span><b>·</b> Corridor</span>
@@ -185,11 +185,34 @@
             <span><b>✦</b> Select a room</span>
           </div>
         </div>
-        <aside class="fortress-lore-panel" aria-live="polite">
-          <p class="eyebrow">Fortress chronicle</p>
+        <aside class="fortress-lore-panel">
+          <p class="eyebrow">Fortress field notes</p>
           <div class="fortress-lore-panel__rule"></div>
-          <div id="fortress-lore-content"></div>
-          <p class="fortress-lore-panel__hint">Click a glowing room to inspect the archives.</p>
+          <div class="fortress-article-tabs" role="tablist" aria-label="Fortress articles">
+            <button type="button" class="fortress-article-tab is-active" id="fortress-tab-structure" role="tab" aria-selected="true" aria-controls="fortress-article-structure">Fortress structure</button>
+            <button type="button" class="fortress-article-tab" id="fortress-tab-algorithm" role="tab" aria-selected="false" aria-controls="fortress-article-algorithm">Generation algorithm</button>
+          </div>
+          <article id="fortress-article-structure" class="fortress-article is-active" role="tabpanel" aria-labelledby="fortress-tab-structure">
+            <h2>How a dwarf fortress is built</h2>
+            <p>A fortress grows around a safe central route. Rooms branch from corridors, while each level receives its own purpose and rhythm.</p>
+            <ul>
+              <li><strong>Surface:</strong> entrance, meeting hall, farms, and storage.</li>
+              <li><strong>Deep halls:</strong> bedrooms, workshops, barracks, and a tavern.</li>
+              <li><strong>Mines:</strong> extraction tunnels, stockpiles, and guarded routes.</li>
+            </ul>
+            <p class="lore-meta">Rooms · corridors · workshops · defense</p>
+          </article>
+          <article id="fortress-article-algorithm" class="fortress-article" role="tabpanel" aria-labelledby="fortress-tab-algorithm" hidden>
+            <h2>How the map is generated</h2>
+            <p>Every regeneration creates three independent floors from a fresh random layout.</p>
+            <ol>
+              <li>Place four rooms inside separate map quadrants.</li>
+              <li>Reject overlaps, then carve each room into walkable tiles.</li>
+              <li>Connect room centers with L-shaped corridors.</li>
+              <li>Reveal tiles around moving dwarves to create fog of war.</li>
+            </ol>
+            <p class="lore-meta">32 × 18 grid · 3 floors · live simulation</p>
+          </article>
           <div class="fortress-events" aria-label="Fortress events">
             <p class="eyebrow">Recent events</p>
             <ol id="fortress-event-log"></ol>
