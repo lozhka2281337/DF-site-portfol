@@ -230,20 +230,20 @@
     const context = canvas.getContext('2d');
     const cellWidth = canvas.width / WIDTH;
     const cellHeight = canvas.height / HEIGHT;
-    context.fillStyle = '#1b2b34';
+    context.fillStyle = '#111a22';
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (let y = 0; y < HEIGHT; y++) {
       for (let x = 0; x < WIDTH; x++) {
         const type = level.tiles[y][x];
         const room = level.roomAt.get(key(x, y));
         if (type === TILE.WALL) {
-          context.fillStyle = '#344850';
+          context.fillStyle = '#111a22';
         } else if (type === TILE.STAIRS) {
           context.fillStyle = '#f6d477';
         } else if (room) {
-          context.fillStyle = '#245264';
+          context.fillStyle = '#123444';
         } else {
-          context.fillStyle = '#347b8b';
+          context.fillStyle = '#23677a';
         }
         context.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.3, cellHeight + 0.3);
       }
