@@ -148,18 +148,8 @@
     }
   }
 
-  function reveal(level) {
-    level.dwarves.forEach(dwarf => {
-      for (let y = dwarf.y - 4; y <= dwarf.y + 4; y++) {
-        for (let x = dwarf.x - 4; x <= dwarf.x + 4; x++) {
-          if (inBounds(x, y) && level.walkable.has(key(x, y))) level.discovered.add(key(x, y));
-        }
-      }
-    });
-  }
-
   function generateFortress() {
-    const level = { tiles: createGrid(), rooms: [], roomAt: new Map(), walkable: new Set(), discovered: new Set(), dwarves: [] };
+    const level = { tiles: createGrid(), rooms: [], roomAt: new Map(), walkable: new Set(), dwarves: [] };
     const leaves = [];
     splitBsp({ x: 2, y: 2, width: WIDTH - 4, height: HEIGHT - 4 }, 2, leaves);
     const mainHall = carveMainHall(level);
@@ -177,12 +167,6 @@
     level.tiles[mainHall.y][mainHall.x] = TILE.STAIRS;
     rebuildWalkable(level);
     level.dwarves = [0, 1, 2].map(index => ({ x: mainHall.x + index - 1, y: mainHall.y }));
-    level.rooms.forEach(room => {
-      for (let y = room.y; y < room.y + room.height; y++) {
-        for (let x = room.x; x < room.x + room.width; x++) level.discovered.add(key(x, y));
-      }
-    });
-    reveal(level);
     return level;
   }
 
@@ -197,15 +181,14 @@
         const tile = document.createElement('button');
         const tileKey = key(x, y);
         const room = level.roomAt.get(tileKey);
-        const visible = level.discovered.has(tileKey) || room;
         const tileType = level.tiles[y][x];
         tile.type = 'button';
-        tile.className = `fortress-terrain fortress-terrain--${tileType === TILE.WALL ? 'wall' : tileType === TILE.STAIRS ? 'stairs' : room ? room.className : 'corridor'}${visible ? '' : ' is-fogged'}`;
-        tile.textContent = visible ? (tileType === TILE.WALL ? '▓' : tileType === TILE.STAIRS ? '≡' : '·') : '░';
+        tile.className = `fortress-terrain fortress-terrain--${tileType === TILE.WALL ? 'wall' : tileType === TILE.STAIRS ? 'stairs' : room ? 'room' : 'corridor'}`;
+        tile.textContent = tileType === TILE.WALL ? '▓' : tileType === TILE.STAIRS ? '≡' : '·';
         tile.style.setProperty('--tile-x', x);
         tile.style.setProperty('--tile-y', y);
-        tile.setAttribute('aria-label', visible ? `Map tile ${x}, ${y}` : 'Unexplored map tile');
-        tile.addEventListener('click', () => inspectTile(x, y, visible, room));
+        tile.setAttribute('aria-label', `Map tile ${x}, ${y}`);
+        tile.addEventListener('click', () => inspectTile(x, y, room));
         map.append(tile);
       }
     }
@@ -245,8 +228,8 @@
     });
   }
 
-  function inspectTile(x, y, visible, room) {
-    if (!state.inspect || !visible) return;
+  function inspectTile(x, y, room) {
+    if (!state.inspect) return;
     const tile = currentLevel().tiles[y][x];
     const label = tile === TILE.STAIRS ? 'stairwell' : tile === TILE.FLOOR ? 'excavated floor' : room ? room.title : 'stone wall';
     addEvent(`Surveyed ${label} at ${x}, ${y}.`);
@@ -280,7 +263,6 @@
         .filter(candidate => level.walkable.has(key(candidate.x, candidate.y)));
       if (candidates.length) Object.assign(dwarf, candidates[Math.floor(Math.random() * candidates.length)]);
     });
-    reveal(level);
     render();
     window.setTimeout(moveDwarves, 1500 + Math.random() * 500);
   }
