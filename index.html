@@ -189,11 +189,11 @@
           </div>
           <article id="fortress-article-structure" class="fortress-article is-active" role="tabpanel" aria-labelledby="fortress-tab-structure">
             <h2>How a dwarf fortress is built</h2>
-            <p>A fortress grows around a safe central route. Rooms branch from corridors, while each level receives its own purpose and rhythm.</p>
+            <p>A fortress grows around a safe central stairwell and main hall. Rooms branch from lit corridors, while mining shafts reach into the surrounding rock.</p>
             <ul>
-              <li><strong>Surface:</strong> entrance, meeting hall, farms, and storage.</li>
-              <li><strong>Deep halls:</strong> bedrooms, workshops, barracks, and a tavern.</li>
-              <li><strong>Mines:</strong> extraction tunnels, stockpiles, and guarded routes.</li>
+              <li><strong>Grand hall:</strong> the central route where traffic converges.</li>
+              <li><strong>Functional rooms:</strong> workshops, barracks, storage, and social spaces.</li>
+              <li><strong>Mining shafts:</strong> narrow exploratory branches cut into the stone.</li>
             </ul>
             <p class="lore-meta">Rooms · corridors · workshops · defense</p>
           </article>
@@ -201,10 +201,10 @@
             <h2>How the map is generated</h2>
             <p>Every regeneration creates a fresh 80 × 80 fortress from a random layout.</p>
             <ol>
-              <li>Place four rooms inside separate map quadrants.</li>
-              <li>Reject overlaps, then carve each room into walkable tiles.</li>
-              <li>Connect room centers with L-shaped corridors.</li>
-              <li>Reveal tiles around moving dwarves to create fog of war.</li>
+              <li>Split the 80 × 80 rock into balanced BSP sectors.</li>
+              <li>Carve medium-sized rectangular rooms inside the sectors.</li>
+              <li>Connect every room to the central stairwell with corridors.</li>
+              <li>Add fan-shaped shafts, then soften edges with cellular automata.</li>
             </ol>
             <p class="lore-meta">80 × 80 grid · BSP + cellular automata · live simulation</p>
           </article>
