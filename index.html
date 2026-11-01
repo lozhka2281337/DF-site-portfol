@@ -4,7 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nikolai Zhukovskii Portfolio — Dwarf Fortress Style</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20261102" media="all">
+  <style>
+    /* Keep the mobile layout usable if a cached webview delays the external stylesheet. */
+    @media (max-width: 768px) {
+      html, body { min-width: 0; overflow-x: hidden; }
+      body { background: #11100e; color: #ece3cc; font-family: "Segoe UI", Arial, sans-serif; }
+      .skip-link { position: absolute; left: 8px; top: -40px; }
+      .mode-switcher { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 12px; background: #1b1712; border-bottom: 1px solid #4a3d2b; }
+      .mode-switcher__label { width: 100%; color: #c9b489; }
+      .mode-switcher__controls { display: flex; width: 100%; gap: 8px; overflow-x: auto; }
+      .mode-btn { flex: 0 0 auto; padding: 8px 12px; border: 1px solid #6d5631; border-radius: 8px; background: #221c15; color: #dac89e; font: inherit; }
+      .mode-btn[data-mode-button="classic"] { display: none; }
+      #portfolio-mode { display: grid; width: 100%; min-width: 0; gap: 18px; padding: 18px 12px 36px; }
+      .portfolio-nav { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 14px; border: 1px solid #4a3d2b; border-radius: 10px; background: #19140f; }
+      .portfolio-nav__links { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+      .portfolio-nav a, a { color: #f3bf55; }
+      .hero, .card { min-width: 0; padding: 16px; border: 1px solid #4a3d2b; border-radius: 14px; background: #201a13; }
+      .hero h1 { margin-top: 8px; color: #fff1d1; font-size: clamp(2rem, 11vw, 3rem); overflow-wrap: anywhere; }
+      .role { color: #f3bf55; }
+      .intro, .card p { color: #d9cdb2; }
+      .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .btn, .palette-btn { display: inline-block; padding: 8px 10px; border: 1px solid #6d5631; border-radius: 4px; background: #261d14; color: #f2ddb0; }
+      .concept-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+      .concept-mark { min-width: 58px; }
+      .skills-list { columns: 1; padding-left: 20px; color: #ece3cc; }
+      #fortress-map-mode { display: none; }
+      [data-mode="fortress"] #portfolio-mode, [data-mode="fortress"] #classic-mode { display: none; }
+      [data-mode="fortress"] #fortress-map-mode { display: block; }
+    }
+  </style>
   <script>
     (() => {
       try {
