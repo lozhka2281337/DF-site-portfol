@@ -876,7 +876,7 @@ a:hover { border-color: var(--mode-accent); }
 [data-mode="fortress"] #classic-mode { display: none; }
 [data-mode="fortress"] #fortress-map-mode { display: block; }
 [data-mode="fortress"] body {
-  background: #121214;
+  background: #16232b;
   color: #d7d9de;
   font-family: "JetBrains Mono", "Courier New", monospace;
   overflow: hidden;
@@ -896,7 +896,7 @@ a:hover { border-color: var(--mode-accent); }
 .fortress-map-view,
 .fortress-lore-panel {
   border: 1px solid #34363c;
-  background: #17181c;
+  background: #1d2d35;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42), inset 0 0 40px rgba(255, 255, 255, 0.015);
 }
 .fortress-map-view {
@@ -992,7 +992,7 @@ a:hover { border-color: var(--mode-accent); }
   align-self: center;
   overflow: hidden;
   border: 1px solid #45474d;
-  background: #0e0f12;
+  background: #1b2b34;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
   cursor: grab;
   touch-action: none;

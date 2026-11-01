@@ -181,7 +181,17 @@
     cellularAutomata(level);
     level.tiles[mainHall.y][mainHall.x] = TILE.STAIRS;
     rebuildWalkable(level);
-    level.dwarves = [0, 1, 2].map(index => ({ x: mainHall.x + index - 1, y: mainHall.y }));
+    const spawnTiles = [...level.walkable];
+    const dwarfCount = Math.min(randomBetween(7, 18), spawnTiles.length);
+    const occupied = new Set();
+    level.dwarves = [];
+    while (level.dwarves.length < dwarfCount) {
+      const spawn = spawnTiles[Math.floor(Math.random() * spawnTiles.length)];
+      if (occupied.has(spawn)) continue;
+      occupied.add(spawn);
+      const [x, y] = spawn.split(':').map(Number);
+      level.dwarves.push({ x, y });
+    }
     return level;
   }
 
@@ -220,20 +230,20 @@
     const context = canvas.getContext('2d');
     const cellWidth = canvas.width / WIDTH;
     const cellHeight = canvas.height / HEIGHT;
-    context.fillStyle = '#0b1117';
+    context.fillStyle = '#1b2b34';
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (let y = 0; y < HEIGHT; y++) {
       for (let x = 0; x < WIDTH; x++) {
         const type = level.tiles[y][x];
         const room = level.roomAt.get(key(x, y));
         if (type === TILE.WALL) {
-          context.fillStyle = '#111a22';
+          context.fillStyle = '#344850';
         } else if (type === TILE.STAIRS) {
           context.fillStyle = '#f6d477';
         } else if (room) {
-          context.fillStyle = '#123444';
+          context.fillStyle = '#245264';
         } else {
-          context.fillStyle = '#23677a';
+          context.fillStyle = '#347b8b';
         }
         context.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.3, cellHeight + 0.3);
       }
