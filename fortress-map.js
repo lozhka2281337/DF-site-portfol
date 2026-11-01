@@ -14,7 +14,11 @@
     { id: 'grand-hall', title: '👑 Grand Hall', subtitle: 'Central gathering room', symbol: '♛', className: 'gold' },
     { id: 'barracks', title: '⚔ Barracks / Forge', subtitle: 'Defense and workshops', symbol: '⚔', className: 'cyan' },
     { id: 'treasury', title: '💎 Treasury', subtitle: 'Storage and stockpiles', symbol: '◆', className: 'violet' },
-    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Rest and social hall', symbol: '♟', className: 'green' }
+    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Rest and social hall', symbol: '♟', className: 'green' },
+    { id: 'workshop', title: '⚒ Workshop', subtitle: 'Tools and materials', symbol: '⚒', className: 'amber' },
+    { id: 'dormitory', title: '⌂ Dormitory', subtitle: 'Dwarven quarters', symbol: '⌂', className: 'amber' },
+    { id: 'stockpile', title: '▦ Stockpile', subtitle: 'Organized reserves', symbol: '▦', className: 'amber' },
+    { id: 'guard-post', title: '◈ Guard Post', subtitle: 'Fortress watch', symbol: '◈', className: 'amber' }
   ];
   const state = { level: null, inspect: false, events: [] };
   const key = (x, y) => `${x}:${y}`;
@@ -95,9 +99,6 @@
     const center = { x: Math.floor(WIDTH / 2), y: Math.floor(HEIGHT / 2) };
     level.stair = center;
     level.tiles[center.y][center.x] = TILE.STAIRS;
-    carveCorridor(level, { x: 2, y: center.y }, center, 3);
-    carveCorridor(level, center, { x: center.x, y: HEIGHT - 3 }, 3);
-    carveCorridor(level, { x: center.x, y: 2 }, center, 3);
     return center;
   }
 
@@ -151,10 +152,12 @@
   function generateFortress() {
     const level = { tiles: createGrid(), rooms: [], roomAt: new Map(), walkable: new Set(), dwarves: [] };
     const leaves = [];
-    splitBsp({ x: 2, y: 2, width: WIDTH - 4, height: HEIGHT - 4 }, 2, leaves);
+    splitBsp({ x: 2, y: 2, width: WIDTH - 4, height: HEIGHT - 4 }, 3, leaves);
     const mainHall = carveMainHall(level);
-    roomSpecs.forEach((spec, index) => {
-      const room = roomFromLeaf(spec, leaves[index % leaves.length]);
+    const roomCount = randomBetween(5, 8);
+    const shuffledLeaves = leaves.sort(() => Math.random() - 0.5);
+    roomSpecs.slice(0, roomCount).forEach((spec, index) => {
+      const room = roomFromLeaf(spec, shuffledLeaves[index]);
       level.rooms.push(room);
       carveRoom(level, room);
       carveCorridor(level, mainHall, room.center, 2);
@@ -208,9 +211,9 @@
         } else if (type === TILE.STAIRS) {
           context.fillStyle = '#f6d477';
         } else if (room) {
-          context.fillStyle = '#164052';
+          context.fillStyle = '#123444';
         } else {
-          context.fillStyle = '#27b6d2';
+          context.fillStyle = '#23677a';
         }
         context.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.3, cellHeight + 0.3);
       }
