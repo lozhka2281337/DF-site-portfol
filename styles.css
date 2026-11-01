@@ -962,15 +962,19 @@ a:hover { border-color: var(--mode-accent); }
 }
 .fortress-map-grid {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(80, minmax(2px, 1fr));
-  grid-template-rows: repeat(80, minmax(2px, 1fr));
+  display: block;
   flex: 1;
   min-height: min(78vw, 760px);
   overflow: hidden;
   border: 1px solid #45474d;
   background: #0e0f12;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+}
+.fortress-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
 }
 .fortress-terrain {
   appearance: none;
@@ -1013,15 +1017,13 @@ a:hover { border-color: var(--mode-accent); }
   text-shadow: 0 0 8px #fff, 0 0 14px #ffcf5a;
 }
 .fortress-room {
-  position: relative;
+  position: absolute;
   z-index: 4;
-  grid-column: calc(var(--room-x) + 1) / span var(--room-width);
-  grid-row: calc(var(--room-y) + 1) / span var(--room-height);
   display: grid;
   place-content: center;
   gap: 2px;
   border: 1px solid currentColor;
-  background: rgba(15, 17, 22, 0.76);
+  background: rgba(22, 64, 82, 0.86);
   color: #e4e6eb;
   cursor: pointer;
   font: inherit;
@@ -1052,8 +1054,6 @@ a:hover { border-color: var(--mode-accent); }
 .fortress-dwarf {
   position: absolute;
   z-index: 7;
-  left: calc((var(--dwarf-x) + 0.5) * 100% / 80);
-  top: calc((var(--dwarf-y) + 0.5) * 100% / 80);
   color: #ffffff;
   font-size: clamp(0.42rem, 0.9vw, 0.8rem);
   text-shadow: 0 0 10px #fff, 0 0 18px #65d9ff;

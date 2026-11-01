@@ -176,30 +176,55 @@
 
   function renderTerrain(level) {
     map.innerHTML = '';
-    for (let y = 0; y < HEIGHT; y++) {
-      for (let x = 0; x < WIDTH; x++) {
-        const tile = document.createElement('button');
-        const tileKey = key(x, y);
-        const room = level.roomAt.get(tileKey);
-        const tileType = level.tiles[y][x];
-        tile.type = 'button';
-        tile.className = `fortress-terrain fortress-terrain--${tileType === TILE.WALL ? 'wall' : tileType === TILE.STAIRS ? 'stairs' : room ? 'room' : 'corridor'}`;
-        tile.textContent = tileType === TILE.WALL ? '▓' : tileType === TILE.STAIRS ? '≡' : '·';
-        tile.style.setProperty('--tile-x', x);
-        tile.style.setProperty('--tile-y', y);
-        tile.setAttribute('aria-label', `Map tile ${x}, ${y}`);
-        tile.addEventListener('click', () => inspectTile(x, y, room));
-        map.append(tile);
-      }
-    }
+    const canvas = document.createElement('canvas');
+    canvas.className = 'fortress-canvas';
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    canvas.setAttribute('aria-label', 'Generated fortress map');
+    canvas.addEventListener('click', event => {
+      const bounds = canvas.getBoundingClientRect();
+      const x = Math.min(WIDTH - 1, Math.max(0, Math.floor((event.clientX - bounds.left) / bounds.width * WIDTH)));
+      const y = Math.min(HEIGHT - 1, Math.max(0, Math.floor((event.clientY - bounds.top) / bounds.height * HEIGHT)));
+      inspectTile(x, y, level.roomAt.get(key(x, y)));
+    });
+    map.append(canvas);
+    drawMap(canvas, level);
     level.rooms.forEach(addRoomButton);
     renderDwarves(level);
+  }
+
+  function drawMap(canvas, level) {
+    const context = canvas.getContext('2d');
+    const cellWidth = canvas.width / WIDTH;
+    const cellHeight = canvas.height / HEIGHT;
+    context.fillStyle = '#0b1117';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < HEIGHT; y++) {
+      for (let x = 0; x < WIDTH; x++) {
+        const type = level.tiles[y][x];
+        const room = level.roomAt.get(key(x, y));
+        if (type === TILE.WALL) {
+          context.fillStyle = '#111a22';
+        } else if (type === TILE.STAIRS) {
+          context.fillStyle = '#f6d477';
+        } else if (room) {
+          context.fillStyle = '#164052';
+        } else {
+          context.fillStyle = '#27b6d2';
+        }
+        context.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.3, cellHeight + 0.3);
+      }
+    }
   }
 
   function addRoomButton(room) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `fortress-room fortress-room--${room.className}`;
+    button.style.left = `${room.x / WIDTH * 100}%`;
+    button.style.top = `${room.y / HEIGHT * 100}%`;
+    button.style.width = `${room.width / WIDTH * 100}%`;
+    button.style.height = `${room.height / HEIGHT * 100}%`;
     button.style.setProperty('--room-x', room.x);
     button.style.setProperty('--room-y', room.y);
     button.style.setProperty('--room-width', room.width);
@@ -216,15 +241,25 @@
   }
 
   function renderDwarves(level) {
+    map.querySelectorAll('.fortress-dwarf').forEach(element => element.remove());
     level.dwarves.forEach((dwarf, index) => {
       const element = document.createElement('span');
       element.className = 'fortress-dwarf';
       element.textContent = '◆';
-      element.style.setProperty('--dwarf-x', dwarf.x);
-      element.style.setProperty('--dwarf-y', dwarf.y);
+      element.style.left = `${(dwarf.x + 0.5) / WIDTH * 100}%`;
+      element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
       element.style.setProperty('--dwarf-delay', `${index * 0.18}s`);
       element.setAttribute('aria-hidden', 'true');
       map.append(element);
+    });
+  }
+
+  function updateDwarves(level) {
+    map.querySelectorAll('.fortress-dwarf').forEach((element, index) => {
+      const dwarf = level.dwarves[index];
+      if (!dwarf) return;
+      element.style.left = `${(dwarf.x + 0.5) / WIDTH * 100}%`;
+      element.style.top = `${(dwarf.y + 0.5) / HEIGHT * 100}%`;
     });
   }
 
@@ -263,7 +298,7 @@
         .filter(candidate => level.walkable.has(key(candidate.x, candidate.y)));
       if (candidates.length) Object.assign(dwarf, candidates[Math.floor(Math.random() * candidates.length)]);
     });
-    render();
+    updateDwarves(level);
     window.setTimeout(moveDwarves, 1500 + Math.random() * 500);
   }
 
