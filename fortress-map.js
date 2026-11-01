@@ -7,14 +7,16 @@
   const lore = document.getElementById('fortress-lore-content');
   if (!map || !lore) return;
 
-  const rooms = [
+  const roomSpecs = [
     {
       id: 'throne',
       title: '👑 Throne Hall',
       subtitle: 'About / Main archive',
       symbol: '♛',
       className: 'gold',
-      x: 3, y: 3, width: 8, height: 5,
+      width: 7,
+      height: 4,
+      quadrant: 'top-left',
       content: '<h2>About the Keeper</h2><p>I am Nikolai, a Computer Science and Applied Mathematics student focused on systems, algorithms, and understanding how things work under the hood.</p><p class="lore-meta">FEFU (RUSSIA) · ПМИ · 2nd year</p>',
       target: 'about'
     },
@@ -24,7 +26,9 @@
       subtitle: 'Stack / Skills archive',
       symbol: '⚔',
       className: 'cyan',
-      x: 21, y: 3, width: 8, height: 5,
+      width: 7,
+      height: 4,
+      quadrant: 'top-right',
       content: '<h2>Tools of the Fortress</h2><div class="lore-tags"><span>C</span><span>NASM</span><span>Algorithms</span><span>Linux</span><span>Networks</span><span>HTML / CSS / JS</span><span>Python</span></div><p>From low-level experiments to interactive interfaces, every tool is chosen to understand the system better.</p>',
       target: 'skills'
     },
@@ -34,7 +38,9 @@
       subtitle: 'Projects / Expeditions archive',
       symbol: '◆',
       className: 'violet',
-      x: 3, y: 11, width: 8, height: 5,
+      width: 7,
+      height: 4,
+      quadrant: 'bottom-left',
       content: '<h2>Project Expeditions</h2><p><strong>Cyber_Puk_Pygame</strong> — a rogue-like game in Python and pygame.</p><p><strong>chat-server</strong> — a Linux chat server written in C.</p><p><strong>One-PM-Calc</strong> — a lightweight 1RM calculator in C.</p>',
       target: 'projects'
     },
@@ -44,7 +50,9 @@
       subtitle: 'Contacts / Socials archive',
       symbol: '♟',
       className: 'green',
-      x: 21, y: 11, width: 8, height: 5,
+      width: 7,
+      height: 4,
+      quadrant: 'bottom-right',
       content: '<h2>Open a Channel</h2><p>Available for conversations about systems, algorithms, games, and new expeditions.</p><ul class="lore-links"><li><a href="mailto:zhukovskii.nm@dvfu.ru">Email</a></li><li><a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://t.me/poveliteldoti" target="_blank" rel="noopener noreferrer">Telegram</a></li></ul>',
       target: 'contacts'
     }
@@ -52,37 +60,109 @@
 
   const roomAt = new Map();
   const walkable = new Set();
-  const dwarves = [
-    { x: 15, y: 8 },
-    { x: 16, y: 9 },
-    { x: 14, y: 8 }
-  ];
+  const dwarves = [];
 
   function key(x, y) {
     return `${x}:${y}`;
   }
 
-  function isInsideRoom(x, y, room) {
-    return x >= room.x && x < room.x + room.width && y >= room.y && y < room.y + room.height;
+  function randomBetween(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
+  function overlaps(candidate, room) {
+    return candidate.x < room.x + room.width + 1 &&
+      candidate.x + candidate.width + 1 > room.x &&
+      candidate.y < room.y + room.height + 1 &&
+      candidate.y + candidate.height + 1 > room.y;
+  }
+
+  function candidateFor(spec) {
+    const ranges = {
+      'top-left': [2, 11, 2, 5],
+      'top-right': [20, 23, 2, 5],
+      'bottom-left': [2, 11, 9, 12],
+      'bottom-right': [20, 23, 9, 12]
+    };
+    const [minX, maxX, minY, maxY] = ranges[spec.quadrant];
+    return {
+      ...spec,
+      x: randomBetween(minX, maxX),
+      y: randomBetween(minY, maxY)
+    };
+  }
+
+  function generateRooms() {
+    const generated = [];
+    roomSpecs.forEach(spec => {
+      let candidate = candidateFor(spec);
+      for (let attempt = 0; attempt < 30 && generated.some(room => overlaps(candidate, room)); attempt++) {
+        candidate = candidateFor(spec);
+      }
+      generated.push(candidate);
+    });
+    return generated;
+  }
+
+  function carve(x, y) {
+    if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return;
+    walkable.add(key(x, y));
+  }
+
+  function carveCorridor(from, to) {
+    const horizontalFirst = Math.random() > 0.5;
+    const points = horizontalFirst
+      ? [[from.x, from.y], [to.x, from.y], [to.x, to.y]]
+      : [[from.x, from.y], [from.x, to.y], [to.x, to.y]];
+    for (let index = 0; index < points.length - 1; index++) {
+      const [x1, y1] = points[index];
+      const [x2, y2] = points[index + 1];
+      const stepX = Math.sign(x2 - x1);
+      const stepY = Math.sign(y2 - y1);
+      let x = x1;
+      let y = y1;
+      while (true) {
+        carve(x, y);
+        carve(x + 1, y);
+        carve(x, y + 1);
+        if (x === x2 && y === y2) break;
+        x += stepX;
+        y += stepY;
+      }
+    }
   }
 
   function buildWorld() {
+    const rooms = generateRooms();
     rooms.forEach(room => {
       for (let y = room.y; y < room.y + room.height; y++) {
         for (let x = room.x; x < room.x + room.width; x++) {
-          walkable.add(key(x, y));
+          carve(x, y);
           roomAt.set(key(x, y), room);
         }
       }
     });
-    for (let x = 0; x < WIDTH; x++) {
-      walkable.add(key(x, 8));
-      walkable.add(key(x, 9));
+
+    const center = { x: Math.floor(WIDTH / 2), y: Math.floor(HEIGHT / 2) };
+    rooms.forEach(room => {
+      carveCorridor(center, {
+        x: room.x + Math.floor(room.width / 2),
+        y: room.y + Math.floor(room.height / 2)
+      });
+    });
+    for (let index = 0; index < rooms.length; index++) {
+      const current = rooms[index];
+      const next = rooms[(index + 1) % rooms.length];
+      carveCorridor(
+        { x: current.x + Math.floor(current.width / 2), y: current.y + Math.floor(current.height / 2) },
+        { x: next.x + Math.floor(next.width / 2), y: next.y + Math.floor(next.height / 2) }
+      );
     }
-    for (let y = 0; y < HEIGHT; y++) {
-      walkable.add(key(15, y));
-      walkable.add(key(16, y));
+
+    for (let index = 0; index < 3; index++) {
+      dwarves.push({ x: center.x + index - 1, y: center.y });
     }
+    return rooms;
   }
 
   function addArchiveButton(room) {
@@ -99,7 +179,7 @@
     map.append(button);
   }
 
-  function renderTerrain() {
+  function renderTerrain(rooms) {
     for (let y = 0; y < HEIGHT; y++) {
       for (let x = 0; x < WIDTH; x++) {
         const tile = document.createElement('span');
@@ -155,9 +235,9 @@
     window.setTimeout(moveDwarves, 1500 + Math.random() * 500);
   }
 
-  buildWorld();
-  renderTerrain();
+  const rooms = buildWorld();
+  renderTerrain(rooms);
   renderDwarves();
-  lore.innerHTML = '<h2>Крепость успешно заложена.</h2><p>Выберите комнату для исследования летописей, навыков, проектов и связей.</p><p class="lore-meta">Живой мир активен · 3 дварфа патрулируют коридоры</p>';
+  lore.innerHTML = '<h2>Крепость успешно заложена.</h2><p>Подземелья сгенерированы. Выберите комнату для исследования летописей, навыков, проектов и связей.</p><p class="lore-meta">Живой мир активен · 3 дварфа патрулируют коридоры</p>';
   window.setTimeout(moveDwarves, 1700);
 })();

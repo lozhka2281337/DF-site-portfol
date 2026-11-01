@@ -622,6 +622,114 @@ html[data-mode="classic"] #main-content {
   }
 }
 
+/* ─── PORTFOLIO PALETTE CONTROL ─── */
+  .palette-btn {
+    border: 1px solid #6d5631;
+    border-radius: 4px;
+    background: #261d14;
+    color: #f2ddb0;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
+  .palette-btn:hover,
+  .palette-btn:focus-visible { border-color: #f3bf55; }
+  .palette-btn--hero {
+    float: right;
+    margin: -4px 0 12px 12px;
+  }
+  html[data-palette="modern"] body {
+    --mode-bg: #11100e;
+    --mode-surface: #201a13;
+    --mode-surface-deep: #16120e;
+    --mode-border: #4a3d2b;
+    --mode-text: #ece3cc;
+    --mode-muted: #b09562;
+    --mode-accent: #f3bf55;
+    --mode-accent-soft: #ffe4a8;
+    --mode-glow: rgba(243, 191, 85, 0.28);
+  }
+  html[data-palette="amber"] body {
+    --mode-bg: #100b03;
+    --mode-surface: #211506;
+    --mode-surface-deep: #120b03;
+    --mode-border: #76501d;
+    --mode-text: #f6d58a;
+    --mode-muted: #c18b3b;
+    --mode-accent: #ffb52e;
+    --mode-accent-soft: #ffe0a0;
+    --mode-glow: rgba(255, 181, 46, 0.38);
+  }
+  html[data-palette="blood"] body {
+    --mode-bg: #100608;
+    --mode-surface: #241015;
+    --mode-surface-deep: #14090d;
+    --mode-border: #6d2530;
+    --mode-text: #f0c5c7;
+    --mode-muted: #b86a72;
+    --mode-accent: #ed4b54;
+    --mode-accent-soft: #ffb2a9;
+    --mode-glow: rgba(237, 75, 84, 0.36);
+  }
+  html[data-palette="magma"] body {
+    --mode-bg: #160703;
+    --mode-surface: #2b1107;
+    --mode-surface-deep: #180904;
+    --mode-border: #873518;
+    --mode-text: #ffd1a0;
+    --mode-muted: #d47735;
+    --mode-accent: #ff6a21;
+    --mode-accent-soft: #ffc078;
+    --mode-glow: rgba(255, 106, 33, 0.4);
+  }
+  html[data-mode="new"][data-palette="modern"] body {
+    background-color: rgba(17, 16, 14, 0.78);
+    background-image: url("dwarf-image.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-blend-mode: multiply;
+  }
+  html[data-mode="new"][data-palette="amber"] body,
+  html[data-mode="new"][data-palette="blood"] body,
+  html[data-mode="new"][data-palette="magma"] body {
+    background: var(--mode-bg);
+  }
+  html[data-palette] .mode-switcher {
+    border-color: var(--mode-border);
+    background: var(--mode-surface-deep);
+  }
+  html[data-palette] .mode-switcher__label { color: var(--mode-muted); }
+  html[data-palette] .mode-btn,
+  html[data-palette] .palette-btn {
+    border-color: var(--mode-border);
+    background: var(--mode-surface);
+    color: var(--mode-text);
+  }
+  html[data-palette] .mode-btn.is-active,
+  html[data-palette] .palette-btn:hover,
+  html[data-palette] .palette-btn:focus-visible {
+    border-color: var(--mode-accent);
+    box-shadow: 0 0 14px var(--mode-glow);
+  }
+  html[data-palette] .mode-btn.is-active {
+    background: var(--mode-accent);
+    color: var(--mode-bg);
+  }
+  html[data-mode="new"][data-palette] .hero,
+  html[data-mode="new"][data-palette] .card {
+    border-color: var(--mode-border);
+    background: linear-gradient(145deg, var(--mode-surface) 0%, var(--mode-surface-deep) 100%);
+  }
+  html[data-mode="new"][data-palette] .hero h1,
+  html[data-mode="new"][data-palette] h2 { color: var(--mode-accent-soft); text-shadow: 0 0 18px var(--mode-glow); }
+  html[data-mode="new"][data-palette] .role,
+  html[data-mode="new"][data-palette] .skills-list li::before { color: var(--mode-accent); }
+  html[data-mode="new"][data-palette] .eyebrow,
+  html[data-mode="new"][data-palette] .secondary-label,
+  html[data-mode="new"][data-palette] .contact-list span { color: var(--mode-muted); }
 /* ─── VISUAL MODES AND TERMINAL EFFECTS ─── */
 body {
   --mode-bg: #11100e;

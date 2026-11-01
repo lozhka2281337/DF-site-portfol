@@ -1,11 +1,10 @@
 # DF-site-portfol
 
-Small static portfolio website with six visual modes:
+Small static portfolio website with three primary modes and four portfolio palettes:
 
-- **Modern Portfolio Mode** (default) — a clear portfolio page in Dwarf Fortress style.
+- **Portfolio Mode** (default) — a clear portfolio page in Dwarf Fortress style, with Modern, Amber, Blood Moon, and Magma palettes.
 - **Classic ASCII Mode** — the original interactive fortress map implementation.
 - **Fortress Map Mode** — a living ASCII-style fortress that works as an interactive resume menu.
-- **Amber Terminal Mode**, **Blood Moon Mode**, and **Magma Mode** — alternate portfolio palettes.
 
 ## Run
 

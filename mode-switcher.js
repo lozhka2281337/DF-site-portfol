@@ -2,7 +2,14 @@
   'use strict';
 
   const STORAGE_KEY = 'df-site-mode';
-  const MODES = new Set(['classic', 'new', 'fortress', 'amber', 'blood', 'magma']);
+  const MODES = new Set(['classic', 'new', 'fortress']);
+  const PALETTES = ['modern', 'amber', 'blood', 'magma'];
+  const PALETTE_LABELS = {
+    modern: 'Modern',
+    amber: 'Amber',
+    blood: 'Blood Moon',
+    magma: 'Magma'
+  };
 
   function normalizeMode(mode) {
     return MODES.has(mode) ? mode : 'new';
@@ -21,6 +28,22 @@
       localStorage.setItem(STORAGE_KEY, mode);
     } catch (e) {
       /* noop */
+    }
+  }
+
+  function applyPalette(palette, persist) {
+    const nextPalette = PALETTES.includes(palette) ? palette : 'modern';
+    document.documentElement.setAttribute('data-palette', nextPalette);
+    document.querySelectorAll('[data-palette-button]').forEach(button => {
+      button.textContent = `Palette: ${PALETTE_LABELS[nextPalette]}`;
+      button.setAttribute('aria-label', `Change portfolio palette (current: ${PALETTE_LABELS[nextPalette]})`);
+    });
+    if (persist) {
+      try {
+        localStorage.setItem('df-site-palette', nextPalette);
+      } catch (e) {
+        /* noop */
+      }
     }
   }
 
@@ -69,6 +92,13 @@
     updateSwitcherHeight();
     window.addEventListener('resize', updateSwitcherHeight);
     applyMode(readMode(), false);
+    let savedPalette = 'modern';
+    try {
+      savedPalette = localStorage.getItem('df-site-palette') || 'modern';
+    } catch (e) {
+      /* noop */
+    }
+    applyPalette(savedPalette, false);
     const buttons = Array.from(document.querySelectorAll('[data-mode-button]'));
     buttons.forEach(button => {
       button.addEventListener('click', () => {
@@ -86,6 +116,13 @@
         const nextButton = buttons[nextIndex];
         nextButton.focus();
         applyMode(nextButton.getAttribute('data-mode-button'), true);
+      });
+    });
+    document.querySelectorAll('[data-palette-button]').forEach(button => {
+      button.addEventListener('click', () => {
+        const current = document.documentElement.dataset.palette || 'modern';
+        const next = PALETTES[(PALETTES.indexOf(current) + 1) % PALETTES.length];
+        applyPalette(next, true);
       });
     });
   }
