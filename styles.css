@@ -73,6 +73,7 @@ button:focus-visible {
   color: #ffe8bf;
 }
 .mode-btn:hover { border-color: #f3bf55; }
+.classic-mobile-notice { display: none; }
 
 #portfolio-mode {
   max-width: 1080px;
@@ -589,8 +590,24 @@ html[data-mode="classic"] #main-content {
 #classic-mode #panel-toggle.collapsed { left: 0; border-left: 1px solid #4a4a3a; }
 
 @media (max-width: 768px) {
-  .mode-switcher { padding: 10px 12px; }
-  #portfolio-mode { padding: 18px 12px 36px; }
+  .mode-switcher {
+    align-items: stretch;
+    padding: 10px 12px;
+  }
+  .mode-switcher__label { width: 100%; }
+  .mode-switcher__controls {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .mode-btn { flex: 0 0 auto; }
+  .mode-btn[data-mode-button="classic"] { display: none; }
+  #portfolio-mode {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    padding: 18px 12px 36px;
+  }
   .hero, .card { padding: 16px; }
   .portfolio-nav {
     top: 58px;
@@ -602,6 +619,10 @@ html[data-mode="classic"] #main-content {
     justify-content: flex-start;
     gap: 4px 12px;
   }
+  .portfolio-nav__brand,
+  .portfolio-nav__links,
+  #portfolio-mode .card,
+  #portfolio-mode .hero { min-width: 0; }
   .concept-card { align-items: flex-start; }
   .concept-mark { min-width: 58px; font-size: 2.1rem; }
   .skills-list { columns: 1; }
@@ -611,6 +632,29 @@ html[data-mode="classic"] #main-content {
   #classic-mode #topbar { font-size: 10px; padding: 0 6px; }
   #classic-mode #left-panel { width: min(86vw, 300px); }
   #classic-mode #panel-toggle { left: min(86vw, 300px); }
+  #classic-mode {
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #11100e;
+  }
+  #classic-mode > :not(.classic-mobile-notice) { display: none; }
+  .classic-mobile-notice {
+    display: block;
+    max-width: 34rem;
+    padding: 24px;
+    border: 1px solid #6d5631;
+    border-radius: 12px;
+    background: #201a13;
+    color: #ece3cc;
+    text-align: center;
+  }
+  .classic-mobile-notice h1 {
+    margin-bottom: 8px;
+    color: #f3bf55;
+    font: 700 1.25rem/1.2 "Consolas", "Courier New", monospace;
+  }
+  .classic-mobile-notice p { color: #c9b489; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1246,6 +1290,11 @@ a:hover { border-color: var(--mode-accent); }
 @keyframes lore-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes room-glow { 50% { box-shadow: 0 0 24px rgba(40, 124, 145, 0.38); } }
 @media (max-width: 860px) {
+  html[data-mode="fortress"],
+  html[data-mode="fortress"] body {
+    overflow: auto;
+  }
+  [data-mode="fortress"] #main-content { height: auto; }
   .fortress-map-shell {
     width: 100%;
     height: auto;
@@ -1256,11 +1305,22 @@ a:hover { border-color: var(--mode-accent); }
   .fortress-map-view { min-height: 0; }
   .fortress-map-grid {
     width: min(100%, 620px);
-    height: auto;
-    min-height: 0;
+    height: min(calc(100vw - 50px), 620px);
+    min-height: 260px;
+    aspect-ratio: 1;
   }
   .fortress-lore-panel { min-height: 0; overflow: visible; }
   .fortress-article { min-height: 180px; max-height: 48vh; }
+  .fortress-map-heading {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fortress-map-controls { align-items: stretch; }
+  .fortress-zoom-controls {
+    margin-left: 0;
+    width: 100%;
+  }
+  .fortress-zoom-controls .fortress-control { flex: 1 1 auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fortress-live i,
