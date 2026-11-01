@@ -18,4 +18,4 @@ Then open `http://localhost:8000`.
 
 ## Mode switch
 
-Use the top switcher buttons to change modes. The choice is saved in `localStorage` and restored after page reload. Fortress Map Mode is a full-screen procedural dungeon with four functional rooms, animated dwarves, a neon stone grid, fog of war, three generated floors, a survey/inspect mode, a live event log, and a Regenerate control. The right-hand field notes contain two articles: how a dwarf fortress is structured and how the map-generation algorithm works.
+Use the top switcher buttons to change modes. The choice is saved in `localStorage` and restored after page reload. Fortress Map Mode is a full-screen 80 × 80 procedural dungeon generated with BSP space partitioning, cellular automata, a central stairwell, a main hall, rooms, connected corridors, and fan-shaped mining shafts. It also includes animated dwarves, fog of war, a survey/inspect mode, a live event log, and a Regenerate control. The right-hand field notes contain two articles: how a dwarf fortress is structured and how the map-generation algorithm works.

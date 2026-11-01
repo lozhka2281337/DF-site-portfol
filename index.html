@@ -169,11 +169,6 @@
             <span class="fortress-live"><i></i> Fortress online</span>
           </div>
           <div class="fortress-map-controls" role="toolbar" aria-label="Fortress map controls">
-            <div class="fortress-floor-tabs" role="group" aria-label="Fortress levels">
-              <button type="button" class="fortress-control is-active" data-floor="0">Surface</button>
-              <button type="button" class="fortress-control" data-floor="1">Deep Halls</button>
-              <button type="button" class="fortress-control" data-floor="2">Mines</button>
-            </div>
             <button type="button" class="fortress-control" id="fortress-inspect" aria-pressed="false">Inspect: Off</button>
             <button type="button" class="fortress-control" id="fortress-regenerate">Regenerate</button>
           </div>
@@ -204,14 +199,14 @@
           </article>
           <article id="fortress-article-algorithm" class="fortress-article" role="tabpanel" aria-labelledby="fortress-tab-algorithm" hidden>
             <h2>How the map is generated</h2>
-            <p>Every regeneration creates three independent floors from a fresh random layout.</p>
+            <p>Every regeneration creates a fresh 80 × 80 fortress from a random layout.</p>
             <ol>
               <li>Place four rooms inside separate map quadrants.</li>
               <li>Reject overlaps, then carve each room into walkable tiles.</li>
               <li>Connect room centers with L-shaped corridors.</li>
               <li>Reveal tiles around moving dwarves to create fog of war.</li>
             </ol>
-            <p class="lore-meta">32 × 18 grid · 3 floors · live simulation</p>
+            <p class="lore-meta">80 × 80 grid · BSP + cellular automata · live simulation</p>
           </article>
           <div class="fortress-events" aria-label="Fortress events">
             <p class="eyebrow">Recent events</p>
