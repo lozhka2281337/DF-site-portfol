@@ -4,18 +4,17 @@
   const WIDTH = 32;
   const HEIGHT = 18;
   const FLOOR_NAMES = ['Surface', 'Deep Halls', 'Mines'];
-  const map = document.getElementById('resume-fortress-map');
-  const lore = document.getElementById('fortress-lore-content');
+  const map = document.getElementById('fortress-map');
   const eventLog = document.getElementById('fortress-event-log');
   const inspectButton = document.getElementById('fortress-inspect');
   const regenerateButton = document.getElementById('fortress-regenerate');
-  if (!map || !lore || !eventLog) return;
+  if (!map || !eventLog) return;
 
   const roomSpecs = [
-    { id: 'throne', title: '👑 Throne Hall', subtitle: 'About / Main archive', symbol: '♛', className: 'gold', width: 7, height: 4, quadrant: 'top-left', target: 'about', content: '<h2>About the Keeper</h2><p>I am Nikolai, a Computer Science and Applied Mathematics student focused on systems, algorithms, and understanding how things work under the hood.</p><p class="lore-meta">FEFU (RUSSIA) · ПМИ · 2nd year</p>' },
-    { id: 'barracks', title: '⚔ Barracks / Forge', subtitle: 'Stack / Skills archive', symbol: '⚔', className: 'cyan', width: 7, height: 4, quadrant: 'top-right', target: 'skills', content: '<h2>Tools of the Fortress</h2><div class="lore-tags"><span>C</span><span>NASM</span><span>Algorithms</span><span>Linux</span><span>Networks</span><span>HTML / CSS / JS</span><span>Python</span></div><p>From low-level experiments to interactive interfaces, every tool is chosen to understand the system better.</p>' },
-    { id: 'treasury', title: '💎 Treasury', subtitle: 'Projects / Expeditions archive', symbol: '◆', className: 'violet', width: 7, height: 4, quadrant: 'bottom-left', target: 'projects', content: '<h2>Project Expeditions</h2><p><strong>Cyber_Puk_Pygame</strong> — a rogue-like game in Python and pygame.</p><p><strong>chat-server</strong> — a Linux chat server written in C.</p><p><strong>One-PM-Calc</strong> — a lightweight 1RM calculator in C.</p>' },
-    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Contacts / Socials archive', symbol: '♟', className: 'green', width: 7, height: 4, quadrant: 'bottom-right', target: 'contacts', content: '<h2>Open a Channel</h2><p>Available for conversations about systems, algorithms, games, and new expeditions.</p><ul class="lore-links"><li><a href="mailto:zhukovskii.nm@dvfu.ru">Email</a></li><li><a href="https://github.com/lozhka2281337" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://t.me/poveliteldoti" target="_blank" rel="noopener noreferrer">Telegram</a></li></ul>' }
+    { id: 'throne', title: '👑 Grand Hall', subtitle: 'Central gathering room', symbol: '♛', className: 'gold', width: 7, height: 4, quadrant: 'top-left' },
+    { id: 'barracks', title: '⚔ Barracks / Forge', subtitle: 'Defense and workshops', symbol: '⚔', className: 'cyan', width: 7, height: 4, quadrant: 'top-right' },
+    { id: 'treasury', title: '💎 Treasury', subtitle: 'Storage and stockpiles', symbol: '◆', className: 'violet', width: 7, height: 4, quadrant: 'bottom-left' },
+    { id: 'tavern', title: '🍺 Tavern', subtitle: 'Rest and social hall', symbol: '♟', className: 'green', width: 7, height: 4, quadrant: 'bottom-right' }
   ];
 
   const state = { levels: [], currentFloor: 0, inspect: false, events: [] };
@@ -164,10 +163,7 @@
 
   function inspectTile(x, y, visible, room) {
     if (!state.inspect || !visible) return;
-    lore.innerHTML = `<h2>Survey point ${x}, ${y}</h2><p>${room ? `${room.title} lies beneath this point.` : 'A quiet section of the generated dungeon. The stone remembers every expedition.'}</p><p class="lore-meta">${FLOOR_NAMES[state.currentFloor]} · ${levelLabel(currentLevel(), x, y)}</p>`;
-    lore.classList.remove('is-revealing');
-    void lore.offsetWidth;
-    lore.classList.add('is-revealing');
+    addEvent(`${FLOOR_NAMES[state.currentFloor]}: surveyed ${room ? room.title : levelLabel(currentLevel(), x, y)} at ${x}, ${y}.`);
   }
 
   function levelLabel(level, x, y) {
@@ -177,15 +173,7 @@
   function selectRoom(room, button) {
     map.querySelectorAll('.fortress-room.is-selected').forEach(element => element.classList.remove('is-selected'));
     button.classList.add('is-selected');
-    lore.innerHTML = `${room.content}<button type="button" class="lore-open" data-target="${room.target}">Open archive →</button>`;
-    lore.classList.remove('is-revealing');
-    void lore.offsetWidth;
-    lore.classList.add('is-revealing');
-    lore.querySelector('.lore-open').addEventListener('click', event => {
-      document.documentElement.dataset.mode = 'new';
-      try { localStorage.setItem('df-site-mode', 'new'); } catch (error) { /* storage is optional */ }
-      requestAnimationFrame(() => document.getElementById(event.currentTarget.dataset.target)?.scrollIntoView({ behavior: 'smooth' }));
-    });
+    addEvent(`${FLOOR_NAMES[state.currentFloor]}: selected ${room.title}.`);
   }
 
   function render() {
@@ -215,8 +203,20 @@
     state.events = [];
     addEvent('A new fortress seed has been carved into the mountain.');
     addEvent('Three levels are ready for inspection.');
-    lore.innerHTML = '<h2>New fortress generated.</h2><p>Explore the floors, survey the corridors, and choose a glowing room to open the archives.</p><p class="lore-meta">Procedural seed refreshed · 3 living levels</p>';
     render();
+  }
+
+  function activateArticle(tab) {
+    const articleId = tab.getAttribute('aria-controls');
+    document.querySelectorAll('.fortress-article-tab').forEach(button => {
+      const active = button === tab;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', String(active));
+    });
+    document.querySelectorAll('.fortress-article').forEach(article => {
+      article.hidden = article.id !== articleId;
+      article.classList.toggle('is-active', article.id === articleId);
+    });
   }
 
   document.querySelectorAll('[data-floor]').forEach(button => button.addEventListener('click', () => {
@@ -230,6 +230,9 @@
     render();
   });
   regenerateButton.addEventListener('click', regenerate);
+  document.querySelectorAll('.fortress-article-tab').forEach(tab => {
+    tab.addEventListener('click', () => activateArticle(tab));
+  });
 
   state.levels = [0, 1, 2].map(generateLevel);
   addEvent('The fortress was founded beneath the mountain.');
