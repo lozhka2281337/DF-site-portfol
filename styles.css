@@ -1000,8 +1000,22 @@ a:hover { border-color: var(--mode-accent); }
   text-shadow: 0 1px 0 #111;
 }
 .fortress-terrain--corridor {
-  color: #30343b;
-  background: #121419;
+  color: #66dfff;
+  background: rgba(32, 113, 132, 0.32);
+  box-shadow: inset 0 0 5px rgba(102, 223, 255, 0.42), 0 0 4px rgba(102, 223, 255, 0.18);
+  text-shadow: 0 0 5px rgba(102, 223, 255, 0.85);
+}
+.fortress-terrain--stairs {
+  color: #ffffff;
+  background: rgba(255, 205, 91, 0.55);
+  box-shadow: 0 0 12px rgba(255, 205, 91, 0.8);
+  text-shadow: 0 0 8px #fff, 0 0 14px #ffcf5a;
+}
+.fortress-terrain.is-fogged {
+  color: #24272d;
+  background: #0c0d10;
+  box-shadow: none;
+  text-shadow: none;
 }
 .fortress-terrain--gold { color: #7a6132; }
 .fortress-terrain--cyan { color: #284f5c; }

@@ -42,28 +42,27 @@
     room.center = { x: room.x + Math.floor(room.width / 2), y: room.y + Math.floor(room.height / 2) };
   }
 
-  function splitBsp(region, depth, leaves) {
+  function splitBsp(region, depth, leaves, splitVertical = region.width >= region.height) {
     const canSplitVertically = region.width >= 24;
     const canSplitHorizontally = region.height >= 24;
     if (depth <= 0 || (!canSplitVertically && !canSplitHorizontally)) {
       leaves.push(region);
       return;
     }
-    const splitVertical = canSplitVertically && (!canSplitHorizontally || Math.random() > 0.5);
-    if (splitVertical) {
-      const split = randomBetween(Math.floor(region.width * 0.38), Math.floor(region.width * 0.62));
-      splitBsp({ x: region.x, y: region.y, width: split, height: region.height }, depth - 1, leaves);
-      splitBsp({ x: region.x + split, y: region.y, width: region.width - split, height: region.height }, depth - 1, leaves);
+    if (splitVertical && canSplitVertically) {
+      const split = randomBetween(Math.floor(region.width * 0.44), Math.floor(region.width * 0.56));
+      splitBsp({ x: region.x, y: region.y, width: split, height: region.height }, depth - 1, leaves, false);
+      splitBsp({ x: region.x + split, y: region.y, width: region.width - split, height: region.height }, depth - 1, leaves, false);
     } else {
-      const split = randomBetween(Math.floor(region.height * 0.38), Math.floor(region.height * 0.62));
-      splitBsp({ x: region.x, y: region.y, width: region.width, height: split }, depth - 1, leaves);
-      splitBsp({ x: region.x, y: region.y + split, width: region.width, height: region.height - split }, depth - 1, leaves);
+      const split = randomBetween(Math.floor(region.height * 0.44), Math.floor(region.height * 0.56));
+      splitBsp({ x: region.x, y: region.y, width: region.width, height: split }, depth - 1, leaves, true);
+      splitBsp({ x: region.x, y: region.y + split, width: region.width, height: region.height - split }, depth - 1, leaves, true);
     }
   }
 
   function roomFromLeaf(spec, leaf) {
-    const width = randomBetween(Math.max(8, Math.floor(leaf.width * 0.45)), Math.max(10, leaf.width - 6));
-    const height = randomBetween(Math.max(6, Math.floor(leaf.height * 0.45)), Math.max(8, leaf.height - 6));
+    const width = randomBetween(12, Math.min(20, leaf.width - 6));
+    const height = randomBetween(10, Math.min(17, leaf.height - 6));
     return {
       ...spec,
       x: randomBetween(leaf.x + 2, leaf.x + Math.max(2, leaf.width - width - 2)),
@@ -259,6 +258,20 @@
     inspectButton.setAttribute('aria-pressed', String(state.inspect));
   }
 
+  function activateArticle(tab) {
+    const articleId = tab.getAttribute('aria-controls');
+    document.querySelectorAll('.fortress-article-tab').forEach(button => {
+      const active = button === tab;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', String(active));
+    });
+    document.querySelectorAll('.fortress-article').forEach(article => {
+      const active = article.id === articleId;
+      article.hidden = !active;
+      article.classList.toggle('is-active', active);
+    });
+  }
+
   function moveDwarves() {
     const level = currentLevel();
     level.dwarves.forEach(dwarf => {
@@ -286,6 +299,9 @@
     render();
   });
   regenerateButton.addEventListener('click', regenerate);
+  document.querySelectorAll('.fortress-article-tab').forEach(tab => {
+    tab.addEventListener('click', () => activateArticle(tab));
+  });
 
   state.level = generateFortress();
   addEvent('The central stairwell was opened.');
