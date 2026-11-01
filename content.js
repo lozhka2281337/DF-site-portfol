@@ -50,7 +50,7 @@ DF.CONTENT = {
   owner: {
     title: '⛏ OWNER',
     rows: [
-      { key: 'Name:',        value: 'Nikolai' },
+      { key: 'Name:',        value: 'Nikolai Zhukovskii' },
       { key: 'Education:',   value: 'FEFU · ПМИ · 2nd year' },
       { key: 'Focus:',       value: 'C/C++, NASM, Python, algorithms' },
       { key: 'Mood:',         value: 'Aiming for an A', color: '#00ff22' },
@@ -196,7 +196,7 @@ DF.CONTENT = {
       x: 130, y: 40, ch: 'Ñ', fg: '#ffff00',
       name: 'Throne',
       desc: 'You ascend the throne. Inscription above the entrance:\n\n' +
-            '  "Nikolai, CS Student"\n\n' +
+            '  "Nikolai Zhukovskii, CS Student"\n\n' +
             'Education: FEFU, ПМИ, 2nd year.\n' +
             'Specialization: C/C++, NASM, Python, algorithms.\n' +
             'Achievement: 180+ solved Codeforces tasks.\n' +
